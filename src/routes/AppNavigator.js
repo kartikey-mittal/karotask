@@ -18,6 +18,7 @@ const AppNavigator = () => {
           }
         />
         <Route path="*" element={<div>404 - Page Not Found</div>} />
+        <Route path="/test" element={<h1 style={{fontFamily:'DMB',justifyContent:"center",display:'flex'}}>TEST PAGE</h1>} />
       </Routes>
     </Router>
   );

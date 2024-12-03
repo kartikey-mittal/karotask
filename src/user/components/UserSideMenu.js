@@ -78,7 +78,7 @@ const UserSideMenu = () => {
 
         <li style={{ marginBottom: "10px" }}>
           <NavLink
-            to="/user/dashboard/test"
+            to="/user/dashboard/faq"
 
             style={({ isActive }) => ({
               textDecoration: "none",

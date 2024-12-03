@@ -10,6 +10,17 @@ const Task = () => {
       { id: 1, creator: 'User A', avatar: 'https://backend.dotasks.in/public/uploads/profile/user.png', name: 'Task 1', price: '₹100', dueDate: '2024-12-10' },
       { id: 2, creator: 'User B', avatar: 'https://backend.dotasks.in/public/uploads/profile/user.png', name: 'Task 2', price: '₹200', dueDate: '2024-12-11' },
       { id: 1, creator: 'User A', avatar: 'https://backend.dotasks.in/public/uploads/profile/user.png', name: 'Task 1', price: '₹100', dueDate: '2024-12-10' },
+      { id: 1, creator: 'User A', avatar: 'https://backend.dotasks.in/public/uploads/profile/user.png', name: 'Task 1', price: '₹100', dueDate: '2024-12-10' },
+      { id: 2, creator: 'User B', avatar: 'https://backend.dotasks.in/public/uploads/profile/user.png', name: 'Task 2', price: '₹200', dueDate: '2024-12-11' },
+      { id: 1, creator: 'User A', avatar: 'https://backend.dotasks.in/public/uploads/profile/user.png', name: 'Task 1', price: '₹100', dueDate: '2024-12-10' },
+      { id: 2, creator: 'User B', avatar: 'https://backend.dotasks.in/public/uploads/profile/user.png', name: 'Task 2', price: '₹200', dueDate: '2024-12-11' },
+      { id: 1, creator: 'User A', avatar: 'https://backend.dotasks.in/public/uploads/profile/user.png', name: 'Task 1', price: '₹100', dueDate: '2024-12-10' },
+      { id: 1, creator: 'User A', avatar: 'https://backend.dotasks.in/public/uploads/profile/user.png', name: 'Task 1', price: '₹100', dueDate: '2024-12-10' },
+      { id: 2, creator: 'User B', avatar: 'https://backend.dotasks.in/public/uploads/profile/user.png', name: 'Task 2', price: '₹200', dueDate: '2024-12-11' },
+      { id: 1, creator: 'User A', avatar: 'https://backend.dotasks.in/public/uploads/profile/user.png', name: 'Task 1', price: '₹100', dueDate: '2024-12-10' },
+      { id: 2, creator: 'User B', avatar: 'https://backend.dotasks.in/public/uploads/profile/user.png', name: 'Task 2', price: '₹200', dueDate: '2024-12-11' },
+      { id: 1, creator: 'User A', avatar: 'https://backend.dotasks.in/public/uploads/profile/user.png', name: 'Task 1', price: '₹100', dueDate: '2024-12-10' },
+      
     
       
     ],

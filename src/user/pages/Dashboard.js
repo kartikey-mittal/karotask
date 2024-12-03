@@ -10,7 +10,7 @@ const Dashboard = () => {
   return (
     <div style={{ display: "flex", height: "100vh" }}>
       {/* Sidebar */}
-      <div style={{ backgroundColor: "#f4f4f4", padding: "0px", height: "100vh" }}>
+      <div style={{ backgroundColor: "#f4f4f4", padding: "0px", height: "100%" }}>
         
         <UserSideMenu/>
       </div>

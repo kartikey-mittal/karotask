@@ -144,7 +144,7 @@ const FAQ = () => {
       {/* Content Area */}
       <div style={{ flex: 1, padding: '0', backgroundColor: '#fff' }}>
         <TopLayer />
-        <div style={{ padding: '20px' }}>
+        <div style={{ padding: '20px' ,backgroundColor:'red',height:"100%"}}>
           <FAQSection title="Sign Up FAQ" questions={signUpQuestions} headingColor="#ff4081" />
           <FAQSection title="Task FAQ" questions={taskQuestions} headingColor="#ff4081" />
           <FAQSection title="Payment FAQ" questions={paymentQuestions} headingColor="#ff4081" />
