@@ -14,7 +14,7 @@ const LatestTasks = ({ tasks }) => {
       <h3 style={{ margin: '0' }}>Latest Tasks</h3>
       <button style={{
         padding: '5px 10px',
-        backgroundColor: '#4c5dbe',
+        backgroundColor: '#d9418d',
         color: '#FFF',
         border: 'none',
         borderRadius: '5px',

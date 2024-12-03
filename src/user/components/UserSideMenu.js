@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { FaTachometerAlt, FaClipboardList, FaMoneyBillAlt } from "react-icons/fa"; // Imported icons for new options
-import logo from './../../assets/karoTask.png'; 
+import logo from './../../assets/karoTask1.png'; 
 
 const UserSideMenu = () => {
   return (

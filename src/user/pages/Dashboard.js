@@ -15,7 +15,7 @@ const Dashboard = () => {
       </div>
 
       {/* Content Area */}
-      <div style={{ flex: 1, padding: "20px",backgroundColor:"#fff" }}>
+      <div style={{ flex: 1, padding: "0px",backgroundColor:"#fff" }}>
         <Routes>
           <Route path="Earning" element={<Earning />} />
           <Route path="task" element={<Task />} />
