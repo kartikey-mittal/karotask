@@ -1,9 +1,9 @@
 import React from 'react';
 
-const StatBox = ({ icon, title, value }) => {
+const StatBox = ({ icon, title, value,color }) => {
   return (
     <div style={{
-      backgroundColor: '#e3f5ff',
+      backgroundColor: color,
       padding: '20px',
       borderRadius: '10px',
       width: '200px',
@@ -11,7 +11,7 @@ const StatBox = ({ icon, title, value }) => {
       margin: '10px',
       position: 'relative',border:'0.2px solid #e5e5e5'
     }}>
-      <div style={{ position: 'absolute', top: '20px', right: '15px', fontSize:"0.5rem" ,color:"#353739"}}>
+      <div style={{ position: 'absolute', top: '20px', right: '15px', fontSize:"0.5rem" ,color:"#7a7a7a"}}>
         {icon}
       </div>
       <div style={{ display: 'flex', flexDirection: 'column' }}>

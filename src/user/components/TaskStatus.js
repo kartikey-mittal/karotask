@@ -37,7 +37,7 @@ const TaskStatus = ({ completed, inProgress, pendingApproval }) => {
       <Doughnut data={data} options={options} />
       <div style={{ marginTop: '20px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px',fontSize:"0.8rem" }}>
-          <span style={{ color: '#66BB6A',fontSize:"0.8rem" }}>● Completed</span>
+          <span style={{ color: '#208b3e',fontSize:"0.8rem" }}>● Completed</span>
           <span>{completed}%</span>
         </div>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' ,fontSize:"0.8rem"}}>
