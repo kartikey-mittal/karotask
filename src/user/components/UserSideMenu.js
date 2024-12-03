@@ -5,9 +5,9 @@ import logo from './../../assets/karoTask1.png';
 
 const UserSideMenu = () => {
   return (
-    <div style={{ width: "200px", borderRight: "1px solid #ddd", padding: "10px", height: "100vh" }}>
+      <div style={{ width: "200px", borderRight: "1px solid #ddd", padding: "10px", height: "100%" }}>
       {/* Logo */}
-      <div style={{ marginBottom: "20px" }}>
+      <div style={{ marginBottom: "0" }}>
         <img
           src={logo} 
           alt="Logo"

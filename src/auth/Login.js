@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "./AuthContext";
+import karoTask1 from '../assets/karoTask1.png'; // Importing the image
 
 const Login = () => {
   const { login } = useContext(AuthContext);
@@ -13,12 +14,13 @@ const Login = () => {
     navigate("/user/dashboard");
   };
 
-  return (
-    <div>
-      <h1>Login</h1>
+  return ( 
+    <div className="login-container">
+      <img src={karoTask1} alt="Karo Task" style={{ width: '200px', marginBottom: '20px' }} /> {/* Image element */}
+      <h1>Log In to KaroTask</h1>
       <button onClick={handleLogin}>Log In</button>
     </div>
   );
 };
 
-export default Login;
+export default Login; 
