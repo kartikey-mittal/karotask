@@ -74,6 +74,24 @@ const UserSideMenu = () => {
             Earnings
           </NavLink>
         </li>
+        {/* FAQ */}
+        <li style={{ marginBottom: "10px" }}>
+          <NavLink
+            to="/user/dashboard/faq"
+            style={({ isActive }) => ({
+              textDecoration: "none",
+              color: isActive ? "white" : "#000",
+              display: "flex",
+              alignItems: "center",
+              padding: "10px",
+              borderRadius: "10px",
+              backgroundColor: isActive ? "#cf1270" : "#f2f2f2", // Active state has #cf1270 bg, inactive has light gray bg
+            })}
+          >
+            <FaClipboardList style={{ marginRight: "10px", color: "darkgray" }} />
+            FAQ
+          </NavLink>
+        </li>
       </ul>
     </div>
   );
