@@ -7,6 +7,7 @@ const ProtectedRoute = ({ children }) => {
   const { token } = useContext(AuthContext);
 
   // Redirect to login if not authenticated
+  // return token ? children : <Navigate to="/login" />;
   return token ? children : <Navigate to="/login" />;
 };
 

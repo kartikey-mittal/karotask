@@ -5,8 +5,11 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  
 }
-
+input, select {
+  cursor: text; /* Restore the default text cursor */
+}
 code {
   font-family: DMM,source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
