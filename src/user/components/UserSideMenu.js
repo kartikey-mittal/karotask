@@ -75,9 +75,11 @@ const UserSideMenu = () => {
           </NavLink>
         </li>
 
+
         <li style={{ marginBottom: "10px" }}>
           <NavLink
             to="/user/dashboard/test"
+
             style={({ isActive }) => ({
               textDecoration: "none",
               color: isActive ? "white" : "#000",
@@ -88,8 +90,10 @@ const UserSideMenu = () => {
               backgroundColor: isActive ? "#cf1270" : "#f2f2f2", // Active state has #cf1270 bg, inactive has light gray bg
             })}
           >
-            <FaLaptopCode  style={{ marginRight: "10px", color: "darkgray" }} />
-            Test
+
+            <FaClipboardList style={{ marginRight: "10px", color: "darkgray" }} />
+            FAQ
+
           </NavLink>
         </li>
       </ul>
