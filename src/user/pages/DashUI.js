@@ -60,10 +60,10 @@ const DashUI = () => {
       <TopLayer />
       <div style={{ fontFamily: 'DMM, sans-serif', padding: '20px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
-          <StatBox icon={<FaTasks size="2em" />} title="Total Tasks" value="194" />
-          <StatBox icon={<FaSpinner size="2em" />} title="Ongoing Tasks" value="7" />
-          <StatBox icon={<FaRegClock size="2em" />} title="Pending Approval" value="0" />
-          <StatBox icon={<FaRupeeSign size="2em" />} title="My Earnings" value="₹0" />
+          <StatBox icon={<FaTasks size="2em" />} title="Total Tasks" value="194" color="#edf0ff" />
+          <StatBox icon={<FaSpinner size="2em" />} title="Ongoing Tasks" value="7" color="#ffe8ef" />
+          <StatBox icon={<FaRegClock size="2em" />} title="Pending Approval" value="0" color="#fcd4c8"/>
+          <StatBox icon={<FaRupeeSign size="2em" />} title="My Earnings" value="₹15,000" color="#fff3d4" />
         </div>
         <div style={{ backgroundColor: '#E8F5E9', padding: '10px', borderRadius: '10px', marginBottom: '20px', display: 'flex', alignItems: 'center' }}>
           <FaBell style={{ marginRight: '10px',color:"#a30b4d" }} />
