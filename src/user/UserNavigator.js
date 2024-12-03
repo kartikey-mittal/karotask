@@ -7,7 +7,7 @@ const UserNavigator = () => {
   return (
     <Routes>
       <Route path="/dashboard/*" element={<Dashboard />} />
-      <Route path="/dashboard/faq" element={<FAQ />} />
+     
       <Route path="*" element={<div>User Section 404 - Page Not Found</div>} />
     </Routes>
   );

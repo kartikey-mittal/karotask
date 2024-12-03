@@ -5,6 +5,7 @@ import Task from "./Task";
 import UserSideMenu from "../components/UserSideMenu";
 import DashUI from "./DashUI";
 import Test from "./Test";
+import FAQ from "./FAQ";
 
 const Dashboard = () => {
   return (
@@ -21,6 +22,7 @@ const Dashboard = () => {
           <Route path="Earning" element={<Earning />} />
           <Route path="task" element={<Task />} />
           <Route path="test" element={<Test />} />
+          <Route path="faq" element={<FAQ />} />
           <Route path="*" element={<DashUI/>} />
         </Routes>
       </div>

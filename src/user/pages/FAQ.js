@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import UserSideMenu from '../components/UserSideMenu';
+import { RiArrowDropDownLine, RiArrowDropUpLine } from 'react-icons/ri';
 import { FaUserCircle, FaLock, FaQuestionCircle, FaSignOutAlt} from 'react-icons/fa';
+
 
 const TopLayer = () => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
@@ -59,7 +60,7 @@ const FAQSection = ({ title, questions, headingColor }) => {
           style={{
             marginBottom: '10px',
             padding: '10px',
-            backgroundColor: '#f9f9f9',
+            backgroundColor: '#f7f9fb',
             border: '1px solid #ddd',
             borderRadius: '5px',
           }}
@@ -85,7 +86,11 @@ const FAQSection = ({ title, questions, headingColor }) => {
                 cursor: 'pointer',
               }}
             >
-              {openQuestion === index ? '▲' : '▼'}
+              {openQuestion === index ? (
+                <RiArrowDropUpLine />
+              ) : (
+                <RiArrowDropDownLine />
+              )}
             </button>
           </div>
 
@@ -95,8 +100,7 @@ const FAQSection = ({ title, questions, headingColor }) => {
               style={{
                 marginTop: '10px',
                 padding: '10px',
-                backgroundColor: '#f5f5f5',
-                border: '1px solid #ddd',
+                backgroundColor: '#fff',
                 borderRadius: '5px',
               }}
             >
@@ -135,16 +139,28 @@ const FAQ = () => {
   ];
 
   return (
-    <div style={{ display: 'flex', height: '100vh' }}>
-      {/* Sidebar */}
-      <div style={{ backgroundColor: '#f4f4f4', padding: '0px', height: '100vh' }}>
-        <UserSideMenu />
-      </div>
-
-      {/* Content Area */}
-      <div style={{ flex: 1, padding: '0', backgroundColor: '#fff' }}>
-        <TopLayer />
-        <div style={{ padding: '20px' ,backgroundColor:'red',height:"100%"}}>
+    <div style={{ height: '100%', width: '100%', }}>
+      <TopLayer />
+      <div style={{ display: 'flex', height: '100vh' }}>
+        <div
+          style={{
+            padding: '20px',
+            height: '100%',
+            width: '100%',
+            overflowY: 'scroll',
+            scrollBehavior: 'smooth',
+            scrollbarWidth: 'none', // For Firefox
+            msOverflowStyle: 'none', // For IE and Edge
+          }}
+        >
+          <style>
+            {`
+              /* For Chrome, Edge, and Safari */
+              div::-webkit-scrollbar {
+                display: none;
+              }
+            `}
+          </style>
           <FAQSection title="Sign Up FAQ" questions={signUpQuestions} headingColor="#ff4081" />
           <FAQSection title="Task FAQ" questions={taskQuestions} headingColor="#ff4081" />
           <FAQSection title="Payment FAQ" questions={paymentQuestions} headingColor="#ff4081" />
@@ -155,3 +171,6 @@ const FAQ = () => {
 };
 
 export default FAQ;
+
+
+
