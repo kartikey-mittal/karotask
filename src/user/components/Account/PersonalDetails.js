@@ -31,12 +31,12 @@ const PersonalDetails = () => {
         <h2 style={{ marginTop: "0", fontFamily: "DMM", color: "#000000" }}>Kartikey Mittal</h2>
         <div style={{ display: 'flex', justifyContent: 'space-between', margin: "10px 0" }}>
           <span style={{ fontFamily: "DMM", color: "#a9a9a9" }}>Email:</span>
-          <span style={{ fontFamily: "DMM" }}>foodkartikey@gmail.com <FaCheckCircle style={{ color: "#57ae8e", marginLeft: "5px" }} /></span>
+          <span style={{ fontFamily: "DMM" }}>g6.kartikey@gmail.com <FaCheckCircle style={{ color: "#57ae8e", marginLeft: "5px" }} /></span>
         </div>
         <hr style={{ border: "none", borderTop: "1px solid rgba(0, 0, 0, 0.05)" }} />
         <div style={{ display: 'flex', justifyContent: 'space-between', margin: "10px 0" }}>
           <span style={{ fontFamily: "DMM", color: "#a9a9a9" }}>Phone number:</span>
-          <span style={{ fontFamily: "DMM" }}>+917678416005 <FaCheckCircle style={{ color: "#57ae8e", marginLeft: "5px" }} /></span>
+          <span style={{ fontFamily: "DMM" }}>+91799999999 <FaCheckCircle style={{ color: "#57ae8e", marginLeft: "5px" }} /></span>
         </div>
         <hr style={{ border: "none", borderTop: "1px solid rgba(0, 0, 0, 0.05)" }} />
         <div style={{ display: 'flex', justifyContent: 'space-between', margin: "10px 0" }}>
