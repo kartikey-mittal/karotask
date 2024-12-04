@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import TaskTable from '../components/TaskTable';
-import TaskTopLayer from '../components/TaskTopLayer';
+import UserTopLayer from '../components/UserTopLayer';
+import { FaUserCircle, FaLock, FaQuestionCircle, FaSignOutAlt,FaTasks} from 'react-icons/fa';
 
 const Task = () => {
   const tasks = {
@@ -35,7 +36,7 @@ const Task = () => {
 
   return (
     <>
-    <TaskTopLayer/>
+    <UserTopLayer name="Tasks" icon={FaTasks} />
     <div style={{ padding: '20px', fontFamily: 'DMM, sans-serif' }}>
       <div className="tabs" style={{ display: 'flex', borderBottom: '2px solid #ddd' }}>
         {Object.keys(tasks).map((tab) => (

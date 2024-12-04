@@ -10,7 +10,7 @@ const Dashboard = () => {
       <Route path="earning" element={<Earning />} />
       <Route path="task" element={<Task />} />
       <Route path="faq" element={<FAQ />} />
-      <Route path="*" element={<FAQ />} />
+      <Route path="*" element={<DashUI />} />
     </Routes>
   );
 };
