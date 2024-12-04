@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import TaskTable from '../components/TaskTable';
-import TaskTopLayer from '../components/TaskTopLayer';
+import UserTopLayer from '../components/UserTopLayer';
+import { FaUserCircle, FaLock, FaQuestionCircle, FaSignOutAlt,FaTasks} from 'react-icons/fa';
 
 const Task = () => {
   const tasks = {
@@ -10,6 +11,17 @@ const Task = () => {
       { id: 1, creator: 'User A', avatar: 'https://backend.dotasks.in/public/uploads/profile/user.png', name: 'Task 1', price: '₹100', dueDate: '2024-12-10' },
       { id: 2, creator: 'User B', avatar: 'https://backend.dotasks.in/public/uploads/profile/user.png', name: 'Task 2', price: '₹200', dueDate: '2024-12-11' },
       { id: 1, creator: 'User A', avatar: 'https://backend.dotasks.in/public/uploads/profile/user.png', name: 'Task 1', price: '₹100', dueDate: '2024-12-10' },
+      { id: 1, creator: 'User A', avatar: 'https://backend.dotasks.in/public/uploads/profile/user.png', name: 'Task 1', price: '₹100', dueDate: '2024-12-10' },
+      { id: 2, creator: 'User B', avatar: 'https://backend.dotasks.in/public/uploads/profile/user.png', name: 'Task 2', price: '₹200', dueDate: '2024-12-11' },
+      { id: 1, creator: 'User A', avatar: 'https://backend.dotasks.in/public/uploads/profile/user.png', name: 'Task 1', price: '₹100', dueDate: '2024-12-10' },
+      { id: 2, creator: 'User B', avatar: 'https://backend.dotasks.in/public/uploads/profile/user.png', name: 'Task 2', price: '₹200', dueDate: '2024-12-11' },
+      { id: 1, creator: 'User A', avatar: 'https://backend.dotasks.in/public/uploads/profile/user.png', name: 'Task 1', price: '₹100', dueDate: '2024-12-10' },
+      { id: 1, creator: 'User A', avatar: 'https://backend.dotasks.in/public/uploads/profile/user.png', name: 'Task 1', price: '₹100', dueDate: '2024-12-10' },
+      { id: 2, creator: 'User B', avatar: 'https://backend.dotasks.in/public/uploads/profile/user.png', name: 'Task 2', price: '₹200', dueDate: '2024-12-11' },
+      { id: 1, creator: 'User A', avatar: 'https://backend.dotasks.in/public/uploads/profile/user.png', name: 'Task 1', price: '₹100', dueDate: '2024-12-10' },
+      { id: 2, creator: 'User B', avatar: 'https://backend.dotasks.in/public/uploads/profile/user.png', name: 'Task 2', price: '₹200', dueDate: '2024-12-11' },
+      { id: 1, creator: 'User A', avatar: 'https://backend.dotasks.in/public/uploads/profile/user.png', name: 'Task 1', price: '₹100', dueDate: '2024-12-10' },
+      
     
       
     ],
@@ -24,7 +36,7 @@ const Task = () => {
 
   return (
     <>
-    <TaskTopLayer/>
+    <UserTopLayer name="Tasks" icon={FaTasks} />
     <div style={{ padding: '20px', fontFamily: 'DMM, sans-serif' }}>
       <div className="tabs" style={{ display: 'flex', borderBottom: '2px solid #ddd' }}>
         {Object.keys(tasks).map((tab) => (

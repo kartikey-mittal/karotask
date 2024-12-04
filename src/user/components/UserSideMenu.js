@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { FaTachometerAlt, FaClipboardList, FaMoneyBillAlt,FaLaptopCode  } from "react-icons/fa"; // Imported icons for new options
+import { FaTachometerAlt, FaClipboardList, FaMoneyBillAlt,FaLaptopCode ,FaQuestionCircle  } from "react-icons/fa"; // Imported icons for new options
 import logo from './../../assets/karoTask1.png'; 
 
 const UserSideMenu = () => {
@@ -78,7 +78,7 @@ const UserSideMenu = () => {
 
         <li style={{ marginBottom: "10px" }}>
           <NavLink
-            to="/user/dashboard/test"
+            to="/user/dashboard/faq"
 
             style={({ isActive }) => ({
               textDecoration: "none",
@@ -91,7 +91,7 @@ const UserSideMenu = () => {
             })}
           >
 
-            <FaClipboardList style={{ marginRight: "10px", color: "darkgray" }} />
+            <FaQuestionCircle  style={{ marginRight: "10px", color: "darkgray" }} />
             FAQ
 
           </NavLink>
