@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { FaBookmark, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { NavLink } from 'react-router-dom';
 
 const TaskTable = ({ tasks }) => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -23,7 +24,7 @@ const TaskTable = ({ tasks }) => {
         <td>{task.price}</td>
         <td>{task.dueDate}</td>
         <td>
-          <button className="action-button">Start Task</button>
+          <NavLink className="action-button" to={`task-details/${task.id}`}> Start Task</NavLink>
         </td>
         <td>
           <FaBookmark className="bookmark-icon" />
@@ -107,7 +108,9 @@ const TaskTable = ({ tasks }) => {
           border-radius: 5px;
           cursor: pointer;
           color: #fff;
+          text-decoration: none;
           font-family:"DMM"
+          
         }
         .bookmark-icon {
           color: #ff4081;
