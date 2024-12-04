@@ -13,6 +13,9 @@ const Dashboard = () => {
       <Route path="task" element={<Task />} />
       <Route path="task/task-details/:id" element={<TaskDetails />} />
       <Route path="faq" element={<FAQ />} />
+
+      <Route path="*" element={<DashUI />} />
+
     </Routes>
   );
 };
