@@ -12,9 +12,9 @@ const AppNavigator = () => {
         <Route
           path="/user/*"
           element={
-            <ProtectedRoute>
+            // <ProtectedRoute>
               <UserNavigator />
-            </ProtectedRoute>
+            // </ProtectedRoute>
           }
         />
         <Route path="*" element={<div>404 - Page Not Found</div>} />
