@@ -4,6 +4,7 @@ import CreatorDashUI from "./CreatorDashUI";
 import CreatorTask from "./CreatorTask";
 import CreatorTaskDetails from "./CreatorTaskDetails";
 import CreateNewTask from "./CreateNewTask";
+import CreatorFAQ from './CreatorFAQ';
 
 
 
@@ -16,6 +17,7 @@ const CreatorDashboard = () => {
       <Route path="task/create-task" element={<CreateNewTask />} />
       <Route path="task/task-info/:id" element={<CreatorTaskDetails />} />
       <Route path="earning" element={<CreatorDashUI />} />
+      <Route path="faq" element={<CreatorFAQ />} />
      
 
     
