@@ -1,6 +1,6 @@
 import React from 'react';
 
-const LatestTasks = ({ tasks }) => {
+const LatestTask = ({ tasks, role }) => {
   return (
     <div style={{
       backgroundColor: '#f7f9fb',
@@ -21,7 +21,7 @@ const LatestTasks = ({ tasks }) => {
         cursor: 'pointer',
         position: 'absolute',
         top: '20px',
-        right: '20px',fontFamily:"DMM"
+        right: '20px', fontFamily: "DMM"
       }}>Show All</button>
       <table style={{ width: '100%', borderCollapse: 'collapse', borderRadius: '10px', overflow: 'hidden', marginTop: '40px' }}>
         <thead>
@@ -29,7 +29,7 @@ const LatestTasks = ({ tasks }) => {
             <th style={{ padding: '10px' }}>Title</th>
             <th style={{ padding: '10px' }}>Price</th>
             <th style={{ padding: '10px' }}>Due Date</th>
-            <th style={{ padding: '10px' }}>Action</th>
+            <th style={{ padding: '10px' }}>{role === 'user' ? 'Action' : 'Status'}</th>
           </tr>
         </thead>
         <tbody>
@@ -42,14 +42,26 @@ const LatestTasks = ({ tasks }) => {
               <td style={{ padding: '10px' }}>₹{task.price}</td>
               <td style={{ padding: '10px' }}>{task.dueDate}</td>
               <td style={{ padding: '10px' }}>
-                <button style={{
-                  padding: '5px 10px',
-                  backgroundColor: '#2f2f2f',
-                  color: '#FFF',
-                  border: 'none',
-                  borderRadius: '5px',
-                  cursor: 'pointer',fontFamily:'DMM'
-                }}>Start Task</button>
+                {role === 'user' ? (
+                  <button style={{
+                    padding: '5px 10px',
+                    backgroundColor: '#2f2f2f',
+                    color: '#FFF',
+                    border: 'none',
+                    borderRadius: '5px',
+                    cursor: 'pointer', fontFamily: 'DMM'
+                  }}>Start Task</button>
+                ) : (
+                  <span style={{
+                    padding: '3px 3px',
+                    borderRadius: '5px',
+                    color: '#FFF',
+                    backgroundColor: task.status === 'ongoing' ? '#ffa500' : task.status === 'completed' ? '#28a745' : '#6c757d',
+                    fontFamily: 'DMM',fontSize:'0.7rem'
+                  }}>
+                    {task.status}
+                  </span>
+                )}
               </td>
             </tr>
           ))}
@@ -59,4 +71,4 @@ const LatestTasks = ({ tasks }) => {
   );
 };
 
-export default LatestTasks;
+export default LatestTask;

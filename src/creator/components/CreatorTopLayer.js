@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FaUserCircle, FaLock, FaQuestionCircle, FaSignOutAlt } from 'react-icons/fa';
 import { NavLink } from 'react-router-dom';
 
-const TaskTopLayer = ({ name, icon: Icon }) => {
+const CreatorTopLayer = ({ name, icon: Icon }) => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
 
   const toggleDropdown = () => {
@@ -44,4 +44,4 @@ const TaskTopLayer = ({ name, icon: Icon }) => {
   );
 };
 
-export default TaskTopLayer;
+export default CreatorTopLayer;

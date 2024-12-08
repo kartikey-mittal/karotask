@@ -33,9 +33,9 @@ const MyEarnings = () => {
       </div>
       <div style={{ padding: '15px', backgroundColor: '#eef2f8', border: '1px solid #ddd', margin: '16px', borderRadius: '1rem', position: 'relative' }}>
         <p style={{ marginBottom: '10px',fontFamily:'DMB' }}>Withdraw Your Money to a Bank Account</p>
-        <FaMoneyCheckAlt size="1.5em" style={{ position: 'absolute', top: '10px', right: '50px', color: '#cf1270' }} />
+        <FaMoneyCheckAlt size="1.5em" style={{ position: 'absolute', top: '10px', right: '50px', color: '#2f2f2f' }} />
         <p style={{ marginTop: '10px',color:"#939699" }}>Withdraw money securely to your bank account. The minimum payout is Rs.100, and payments are released every Monday.</p>
-        <button style={{ backgroundColor: '#cf1270', color: '#fff', padding: '10px 20px', border: 'none', borderRadius: '5px' ,fontFamily:"DMM"}}>Request Payout</button>
+        <button style={{ backgroundColor: '#2f2f2f', color: '#fff', padding: '10px 20px', border: 'none', borderRadius: '5px' ,fontFamily:"DMM"}}>Request Payout</button>
       </div>
     </div>
   );

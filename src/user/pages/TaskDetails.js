@@ -28,7 +28,7 @@ const TaskDetails = () => {
                   justifyContent: "space-between",
                   alignItems: "center",
                   padding: "10px 20px",
-                  backgroundColor: "#f5f5f5",
+                  backgroundColor: "#f4f4f4",
                   borderBottom: "2px solid #ddd",
                 }}
               >

@@ -2,9 +2,12 @@ import React from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import 'chart.js/auto';
 
-const TaskStatus = ({ completed, inProgress, pendingApproval }) => {
+
+const TaskStatus = ({ completed, inProgress, pendingApproval, role }) => {
+  const isCreator = role === 'creator';
+
   const data = {
-    labels: ['Completed', 'In Progress', 'Pending Approval'],
+    labels: ['Completed', 'In Progress', isCreator ? 'Rejected' : 'Pending Approval'],
     datasets: [
       {
         data: [completed, inProgress, pendingApproval],
@@ -31,21 +34,22 @@ const TaskStatus = ({ completed, inProgress, pendingApproval }) => {
       width: '200px',
       boxShadow: '0 4px 2px rgba(0, 0, 0, 0.1)',
       margin: '10px',
-      textAlign: 'center',border:'0.2px solid #f6f6f6'
+      textAlign: 'center',
+      border: '0.2px solid #f6f6f6',
     }}>
       <h3 style={{ marginBottom: '20px' }}>Task Status</h3>
       <Doughnut data={data} options={options} />
       <div style={{ marginTop: '20px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px',fontSize:"0.8rem" }}>
-          <span style={{ color: '#208b3e',fontSize:"0.8rem" }}>● Completed</span>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px', fontSize: '0.8rem' }}>
+          <span style={{ color: '#208b3e', fontSize: '0.8rem' }}>● Completed</span>
           <span>{completed}%</span>
         </div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' ,fontSize:"0.8rem"}}>
-          <span style={{ color: '#FFA726',fontSize:"0.8rem" }}>● In Progress</span>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px', fontSize: '0.8rem' }}>
+          <span style={{ color: '#FFA726', fontSize: '0.8rem' }}>● In Progress</span>
           <span>{inProgress}%</span>
         </div>
-        <div style={{ display: 'flex', justifyContent: 'space-between',fontSize:"0.8rem" }}>
-          <span style={{ color: '#2f2f2f',fontSize:"0.8rem" }}>● Pending Approval</span>
+        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem' }}>
+          <span style={{ color: '#2f2f2f', fontSize: '0.8rem' }}>● {isCreator ? 'Rejected' : 'Pending Approval'}</span>
           <span>{pendingApproval}%</span>
         </div>
       </div>

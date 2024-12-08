@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "../auth/Login";
 import ProtectedRoute from "./ProtectedRoute";
 import UserNavigator from "../user/UserNavigator";
+import CreatorNavigator from "../creator/CreatorNavigator";
 
 const AppNavigator = () => {
   return (
@@ -14,6 +15,14 @@ const AppNavigator = () => {
           element={
             // <ProtectedRoute>
               <UserNavigator />
+            // </ProtectedRoute>
+          }
+        />
+         <Route
+          path="/creator/*"
+          element={
+            // <ProtectedRoute>
+              <CreatorNavigator />
             // </ProtectedRoute>
           }
         />
