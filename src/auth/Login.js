@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail } from "firebase/auth";
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import karoTask1 from "../assets/karoTask1.png";
 import { auth, db } from "../firebase";
@@ -102,9 +102,12 @@ const Login = () => {
       const user = userCredential.user;
       const userDoc = await getDoc(doc(db, activeTab === "user" ? "users" : "creators", user.uid));
       if (userDoc.exists()) {
-        navigate(`/${activeTab}/dashboard`);
+        if (user.emailVerified) {
+          navigate(`/${activeTab}/dashboard`);
+        } else {
+          setError("Please verify your email address.");
+        }
       } else {
-
         setError("Invalid role!");
       }
     } catch (error) {
@@ -126,8 +129,13 @@ const Login = () => {
         phone: formData.phone,
         role: activeTab,
       });
-      alert("Signup successful! Please log in.");
-      setIsSignup(false);
+
+      // Send verification email
+      await sendEmailVerification(user);
+
+      // Display a success message
+      setError("Signup successful! Please check your email for verification.");
+      setIsSignup(false); // You can optionally switch back to login mode
     } catch (error) {
       setError(getFirebaseErrorMessage(error.code));
     } finally {
