@@ -32,7 +32,7 @@ const CreatorTask = () => {
     ],
   };
 
-  const [activeTab, setActiveTab] = useState('Available Tasks');
+  const [activeTab, setActiveTab] = useState('All Tasks');
 
   return (
     <>
@@ -57,7 +57,7 @@ const CreatorTask = () => {
           ></span>
           <button
             style={{
-              backgroundColor: '#2f2f2f',
+              backgroundColor: '#d9418d',
               color: '#FFF',
               padding: '10px 10px',
               border: 'none',
