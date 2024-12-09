@@ -1,6 +1,8 @@
+
 import React, { useState } from 'react';
 import { FaUserCircle, FaTachometerAlt, FaLock, FaQuestionCircle, FaSignOutAlt, FaMoneyCheckAlt, } from 'react-icons/fa';
 import UserTopLayer from '../components/UserTopLayer';
+import PayoutHistoryTable from '../components/PayoutHistoryTable';
 
 const TopLayer = () => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
@@ -42,7 +44,7 @@ const MyEarnings = () => {
 };
 
 const PayoutHistory = () => {
-  return <div>Payout History Page Content</div>;
+  return <PayoutHistoryTable />;
 };
 
 const EarningsPage = () => {
