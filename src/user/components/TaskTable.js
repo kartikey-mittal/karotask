@@ -2,29 +2,37 @@ import React, { useState } from 'react';
 import { FaBookmark, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { NavLink } from 'react-router-dom';
 
-const TaskTable = ({ tasks }) => {
+const TaskTable = ({ tasks, onStartTask }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const tasksPerPage = 10;
+
+  // Ensure tasks is an array
+  const validTasks = Array.isArray(tasks) ? tasks : [];
 
   // Pagination logic
   const indexOfLastTask = currentPage * tasksPerPage;
   const indexOfFirstTask = indexOfLastTask - tasksPerPage;
-  const currentTasks = tasks.slice(indexOfFirstTask, indexOfLastTask);
-  const totalPages = Math.ceil(tasks.length / tasksPerPage);
+  const currentTasks = validTasks.slice(indexOfFirstTask, indexOfLastTask);
+  const totalPages = Math.ceil(validTasks.length / tasksPerPage);
 
   const renderTasks = () => {
     return currentTasks.map((task) => (
       <tr key={task.id} style={{ borderBottom: '1px solid #ddd', height: '40px' }}>
-        <td>{task.id}</td>
         <td style={{ display: 'flex', alignItems: 'center' }}>
-          <img src={task.avatar} alt="Avatar" className="avatar" />
+          <img
+            src="https://backend.dotasks.in/public/uploads/profile/user.png"
+            alt="Avatar"
+            className="avatar"
+          />
           <span>{task.creator}</span>
         </td>
         <td>{task.name}</td>
         <td>{task.price}</td>
         <td>{task.dueDate}</td>
         <td>
-          <NavLink className="action-button" to={`task-details/${task.id}`}> Start Task</NavLink>
+          <NavLink className="action-button" onClick={() => onStartTask(task.id)} to={`task-details/${task.id}`}>
+            Start Task
+          </NavLink>
         </td>
         <td>
           <FaBookmark className="bookmark-icon" />
@@ -33,12 +41,20 @@ const TaskTable = ({ tasks }) => {
     ));
   };
 
+  const handleNextPage = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+
   return (
     <div className="table-container">
       <table>
         <thead>
           <tr style={{ backgroundColor: '#f1f1f1', borderBottom: '2px solid #ddd' }}>
-            <th style={{ padding: '10px', textAlign: 'left' }}>Task ID</th>
+            {/* <th style={{ padding: '10px', textAlign: 'left' }}>Task ID</th> */}
             <th style={{ padding: '10px', textAlign: 'left' }}>Creator</th>
             <th style={{ padding: '10px', textAlign: 'left' }}>Task Name</th>
             <th style={{ padding: '10px', textAlign: 'left' }}>Price</th>

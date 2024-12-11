@@ -11,7 +11,9 @@ const Dashboard = () => {
       <Route path="*" element={<DashUI />} />
       <Route path="earning" element={<Earning />} />
       <Route path="task" element={<Task />} />
+      {/* <Route path="dashboard" element={<DashUI />} /> */}
       <Route path="task/task-details/:id" element={<TaskDetails />} />
+      <Route path="dashboard/task-details/:id" element={<TaskDetails />} />
       <Route path="faq" element={<FAQ />} />
 
       <Route path="*" element={<DashUI />} />

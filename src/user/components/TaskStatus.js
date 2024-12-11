@@ -44,10 +44,10 @@ const TaskStatus = ({ completed, inProgress, pendingApproval }) => {
           <span style={{ color: '#FFA726',fontSize:"0.8rem" }}>● In Progress</span>
           <span>{inProgress}%</span>
         </div>
-        <div style={{ display: 'flex', justifyContent: 'space-between',fontSize:"0.8rem" }}>
+        {/* <div style={{ display: 'flex', justifyContent: 'space-between',fontSize:"0.8rem" }}>
           <span style={{ color: '#2f2f2f',fontSize:"0.8rem" }}>● Pending Approval</span>
           <span>{pendingApproval}%</span>
-        </div>
+        </div> */}
       </div>
     </div>
   );

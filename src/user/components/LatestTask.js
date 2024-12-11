@@ -38,7 +38,7 @@ const LatestTasks = ({ tasks }) => {
               backgroundColor: '#FFF',
               borderBottom: '1px solid #ddd',
             }}>
-              <td style={{ padding: '10px' }}>{task.title}</td>
+              <td style={{ padding: '10px' }}>{task.name}</td>
               <td style={{ padding: '10px' }}>₹{task.price}</td>
               <td style={{ padding: '10px' }}>{task.dueDate}</td>
               <td style={{ padding: '10px' }}>
