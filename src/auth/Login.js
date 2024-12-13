@@ -6,6 +6,7 @@ import karoTask1 from "../assets/karoTask1.png";
 import { auth, db } from "../firebase";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import './Login.css';
+import loginImage from "../assets/0001 copy.png";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -464,7 +465,7 @@ const Login = () => {
     }}
   >
     <img
-      src="https://i.postimg.cc/RF3zvs7Z/001.png"
+       src={loginImage}
       alt="loginimage"
       style={{
         maxWidth: "100%",
