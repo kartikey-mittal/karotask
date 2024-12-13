@@ -359,7 +359,21 @@ const Login = () => {
           fontSize: "14px",
         }}
       >
-        {isSignup ? "Already have an account? Sign in" : "Don't have an account? Sign up"}
+         {isSignup ? (
+    <>
+      Already have an account?{" "}
+      <span style={{ color: "#3b82f6", cursor: "pointer" }}>
+        Sign in
+      </span>
+    </>
+  ) : (
+    <>
+      Don't have an account?{" "}
+      <span style={{ color: "#3b82f6", cursor: "pointer" }}>
+        Sign up
+      </span>
+    </>
+  )}
       </p>
 
       <p
