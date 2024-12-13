@@ -10,6 +10,9 @@ const CreatorTask = () => {
   const [tasks, setTasks] = useState({ 'All Tasks': [], 'Ongoing Tasks': [] });
   const [activeTab, setActiveTab] = useState('All Tasks');
 
+
+  const [activeTab, setActiveTab] = useState('All Tasks');
+
   useEffect(() => {
     const fetchTasks = async () => {
       try {
@@ -63,6 +66,7 @@ const CreatorTask = () => {
 
     fetchTasks();
   }, []);
+
 
   return (
     <div
@@ -141,7 +145,15 @@ const CreatorTask = () => {
             key={tab}
             onClick={() => setActiveTab(tab)}
             style={{
+
+              backgroundColor: '#d9418d',
+              color: '#FFF',
+              padding: '10px 10px',
+              border: 'none',
+              borderRadius: '10px',
+
               padding: '10px 20px',
+
               cursor: 'pointer',
               fontWeight: activeTab === tab ? 'bold' : 'normal',
               color: activeTab === tab ? '#ff4081' : '#858585',
