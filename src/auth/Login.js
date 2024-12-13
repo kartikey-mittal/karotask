@@ -354,7 +354,6 @@ const Login = () => {
         onClick={() => setIsSignup((prev) => !prev)}
         style={{
           marginTop: "1.5rem",
-          color: "#3b82f6",
           cursor: "pointer",
           fontSize: "14px",
         }}
