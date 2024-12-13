@@ -6,7 +6,7 @@ import karoTask1 from "../assets/karoTask1.png";
 import { auth, db } from "../firebase";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import './Login.css';
-import loginImage from "../assets/0001 copy.png";
+import loginImage from "../assets/2.png";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -485,7 +485,8 @@ const Login = () => {
         maxHeight: "100%",
         objectFit: "cover",
         display: "block",
-        borderRadius: "6px" 
+        borderRadius: "6px",
+       
       }}
       className="responsive-image"
     />
