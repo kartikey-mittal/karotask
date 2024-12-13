@@ -203,7 +203,7 @@ useEffect(() => {
         display: "flex",
         flexDirection: "row",
         alignItems: "center", 
-       
+        width: isMobile ? "100%" : "auto", 
         justifyContent: "center",
         backgroundColor: "#f8f8f8",
        height: "100vh",
