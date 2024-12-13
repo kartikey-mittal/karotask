@@ -11,7 +11,6 @@ const CreatorTask = () => {
   const [activeTab, setActiveTab] = useState('All Tasks');
 
 
-  const [activeTab, setActiveTab] = useState('All Tasks');
 
   useEffect(() => {
     const fetchTasks = async () => {
