@@ -184,16 +184,18 @@ const Login = () => {
       style={{
         fontFamily: "Arial, sans-serif",
         textAlign: "center",
-        padding: "2rem 1rem",
+        padding: "2rem",
         display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
+        flexDirection: "row",
+        alignItems: "center", 
+       
         justifyContent: "center",
         backgroundColor: "#f8f8f8",
-        minHeight: "100vh",
+       height: "100vh",
+        boxSizing: "border-box", 
       }}
     >
-      <div style={{ width: "100%", maxWidth: "400px", backgroundColor: "white", padding: "2rem", borderRadius: "8px", boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)" }}>
+      <div style={{  width: "100%", maxWidth: "400px", backgroundColor: "white", padding: "2rem", borderRadius: "12px",  boxShadow: "0 8px 16px rgba(0, 0, 0, 0.15)",  border: "1px solid #e5e7eb", }}>
         <img src={karoTask1} alt="Karo Task" style={{ width: "200px", marginBottom: "1.5rem", display: "block", marginLeft: "auto", marginRight: "auto" }} />
         <h1 className="title" style={{ marginBottom: "1.5rem" }}>{isSignup ? "Sign Up" : "Sign In"}</h1>
 
@@ -210,6 +212,9 @@ const Login = () => {
               fontFamily: "DMB, Arial, sans-serif",
               fontWeight: activeTab === "user" ? "bold" : "normal",
               color: activeTab === "user" ? "#3b82f6" : "#6b7280",
+              borderRadius: "6px",
+              marginRight: "1rem",
+              transition: "background-color 0.3s, border-color 0.3s", 
             }}
           >
             Tasker Account
@@ -226,6 +231,9 @@ const Login = () => {
               fontFamily: "DMB, Arial, sans-serif",
               fontWeight: activeTab === "creator" ? "bold" : "normal",
               color: activeTab === "creator" ? "#3b82f6" : "#6b7280",
+              borderRadius: "6px",
+              transition: "background-color 0.3s, border-color 0.3s", 
+            
             }}
           >
             Creator Account
@@ -241,7 +249,7 @@ const Login = () => {
               value={formData.name}
               onChange={handleChange}
               className="input-field"
-              style={{ width: "100%", padding: "0.75rem", marginBottom: "0.75rem", border: "1px solid #d1d5db", borderRadius: "5px", fontSize: "16px" }}
+              style={{ width: "100%", padding: "0.75rem",   marginBottom: "1rem", border: "1px solid #d1d5db", borderRadius: "8px", fontSize: "16px",  backgroundColor: "#f9fafb",transition: "border-color 0.3s" }}
             />
           )}
           {isSignup && (
@@ -252,7 +260,7 @@ const Login = () => {
               value={formData.phone}
               onChange={handleChange}
               className="input-field"
-              style={{ width: "100%", padding: "0.75rem", marginBottom: "0.75rem", border: "1px solid #d1d5db", borderRadius: "5px", fontSize: "16px" }}
+              style={{ width: "100%", padding: "0.75rem", marginBottom: "1rem", border: "1px solid #d1d5db", borderRadius: "8px", fontSize: "16px",backgroundColor: "#f9fafb",transition: "border-color 0.3s" }}
             />
           )}
           <input
@@ -262,7 +270,7 @@ const Login = () => {
             value={formData.email}
             onChange={handleChange}
             className="input-field"
-            style={{ width: "100%", padding: "0.75rem", marginBottom: "0.75rem", border: "1px solid #d1d5db", borderRadius: "5px", fontSize: "16px" }}
+            style={{ width: "100%", padding: "0.75rem", marginBottom: "1rem", border: "1px solid #d1d5db", borderRadius: "8px", fontSize: "16px",backgroundColor: "#f9fafb",transition: "border-color 0.3s" }}
           />
           <div className="password-input-container" style={{ position: "relative", width: "100%" }}>
             <input
@@ -276,10 +284,12 @@ const Login = () => {
                 width: "100%",
                 padding: "0.75rem",
                 paddingRight: "2.5rem",
-                marginBottom: "0.75rem",
+                marginBottom: "1rem",
                 border: "1px solid #d1d5db",
-                borderRadius: "5px",
+                borderRadius: "8px",
                 fontSize: "16px",
+                backgroundColor: "#f9fafb",
+                transition: "border-color 0.3s"
               }}
             />
             <button
@@ -288,11 +298,12 @@ const Login = () => {
               style={{
                 position: "absolute",
                 right: "10px",
-                top: "50%",
+                top: "40%",
                 transform: "translateY(-50%)",
-                background: "transparent",
+                background: "#f9fafb",
                 border: "none",
                 cursor: "pointer",
+               
               }}
             >
               {showPassword ? <FaEyeSlash /> : <FaEye />}
@@ -307,7 +318,7 @@ const Login = () => {
             style={{
               width: "100%",
               padding: "0.75rem",
-              backgroundColor: "#3b82f6",
+              backgroundColor: "#2563eb",
               color: "#ffffff",
               border: "none",
               borderRadius: "5px",
@@ -315,6 +326,7 @@ const Login = () => {
               cursor: loading ? "not-allowed" : "pointer",
               opacity: loading ? 0.7 : 1,
               fontFamily: "DMB, Arial, sans-serif",
+              boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
             }}
           >
             {loading ? "Loading..." : isSignup ? "Sign Up" : "Sign In"}
@@ -353,7 +365,7 @@ const Login = () => {
         className="reset-password-switch"
         onClick={() => setShowResetPassword(true)} // Show the password reset modal
         style={{
-          
+          marginTop: ".05rem",
           color: "#3b82f6",
           cursor: "pointer",
           fontSize: "14px",
@@ -441,6 +453,29 @@ const Login = () => {
         )}
         </div>
       </div>
+
+      <div
+    style={{
+      flex: 0.9, 
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      padding: "2rem",
+    }}
+  >
+    <img
+      src="https://i.postimg.cc/RF3zvs7Z/001.png"
+      alt="loginimage"
+      style={{
+        maxWidth: "100%",
+        maxHeight: "100%",
+        objectFit: "cover",
+        display: "block",
+        borderRadius: "6px" 
+      }}
+      className="responsive-image"
+    />
+  </div>
     </div>
   );
 };
