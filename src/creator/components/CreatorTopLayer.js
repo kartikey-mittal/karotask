@@ -1,12 +1,24 @@
 import React, { useState } from "react";
 import { FaUserCircle, FaLock, FaQuestionCircle, FaSignOutAlt } from 'react-icons/fa';
 import { NavLink } from 'react-router-dom';
+import { auth } from '../../firebase.js'; 
 
 const CreatorTopLayer = ({ name, icon: Icon }) => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
 
   const toggleDropdown = () => {
     setDropdownVisible(!dropdownVisible);
+  };
+
+  const handleLogout = async () => {
+    try {
+      await auth.signOut();
+      // Redirect to the login page or perform other actions after logout
+      window.location.href = '/login'; // Replace with your login page URL
+    } catch (error) {
+      console.error('Error logging out:', error);
+      // Handle the error appropriately, e.g., display an error message to the user
+    }
   };
 
   return (
@@ -33,7 +45,7 @@ const CreatorTopLayer = ({ name, icon: Icon }) => {
               <FaQuestionCircle style={{ marginRight: '10px', color: "#bfbfbf" }} />
               <span>Help & Support</span>
             </div>
-            <div style={{ padding: '10px', display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+            <div style={{ padding: '10px', display: 'flex', alignItems: 'center', cursor: 'pointer' }} onClick={handleLogout}>
               <FaSignOutAlt style={{ marginRight: '10px', color: "#bfbfbf" }} />
               <span>Logout</span>
             </div>

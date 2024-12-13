@@ -56,6 +56,27 @@ const CreatorSideMenu = () => {
           </NavLink>
         </li>
 
+        <li style={{ marginBottom: "10px" }}>
+          <NavLink
+            to="/creator/dashboard/faq"
+
+            style={({ isActive }) => ({
+              textDecoration: "none",
+              color: isActive ? "white" : "#000",
+              display: "flex",
+              alignItems: "center",
+              padding: "10px",
+              borderRadius: "10px",
+              backgroundColor: isActive ? "#2f2f2f" : "#f2f2f2", // Active state has #2f2f2f bg, inactive has light gray bg
+            })}
+          >
+
+            <FaQuestionCircle  style={{ marginRight: "10px", color: "darkgray" }} />
+            FAQ
+
+          </NavLink>
+        </li>
+
         
       </ul>
     </div>

@@ -30,9 +30,11 @@ const TaskTable = ({ tasks, onStartTask }) => {
         <td>{task.price}</td>
         <td>{task.dueDate}</td>
         <td>
+
           <NavLink className="action-button" onClick={() => onStartTask(task.id)} to={`task-details/${task.id}`}>
             Start Task
           </NavLink>
+
         </td>
         <td>
           <FaBookmark className="bookmark-icon" />
