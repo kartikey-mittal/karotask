@@ -128,7 +128,20 @@ const Login = () => {
         email: formData.email,
         phone: formData.phone,
         role: activeTab,
-      });
+        ...(activeTab === "user" && {
+            UID: "hkCpyjsu0vbob2WrQpxchij5Gk12",
+            age: 0,
+            completedTask: 0,
+            createdAt: new Date().toLocaleString("en-US", { timeZone: "UTC" }),
+            earnings: 0,
+            inProgressTask: 0,
+            kyc: "temp",
+            panCardUrl: "temp",
+            pendingTask: 0,
+            photoUrl: "temp"
+        })
+    });
+    
 
       // Send verification email
       await sendEmailVerification(user);
