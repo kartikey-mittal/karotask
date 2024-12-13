@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState , useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail } from "firebase/auth";
 import { doc, setDoc, getDoc } from "firebase/firestore";
@@ -7,6 +7,8 @@ import { auth, db } from "../firebase";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import './Login.css';
 import loginImage from "../assets/2.png";
+
+
 
 const Login = () => {
   const navigate = useNavigate();
@@ -18,6 +20,8 @@ const Login = () => {
     phone: "",
     password: "",
   });
+  
+  
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -179,6 +183,16 @@ const Login = () => {
       setLoading(false);
     }
   };
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+useEffect(() => {
+  const handleResize = () => {
+    setIsMobile(window.innerWidth <= 768);
+  };
+
+  window.addEventListener("resize", handleResize);
+  return () => window.removeEventListener("resize", handleResize);
+}, []);
 
   return (
     <div
@@ -469,28 +483,23 @@ const Login = () => {
       </div>
 
       <div
-    style={{
-      flex: 0.9, 
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      padding: "2rem",
-    }}
-  >
-    <img
-       src={loginImage}
-      alt="loginimage"
-      style={{
-        maxWidth: "100%",
-        maxHeight: "100%",
-        objectFit: "cover",
-        display: "block",
-        borderRadius: "6px",
-       
-      }}
-      className="responsive-image"
-    />
-  </div>
+  className="responsive-div"
+  style={{
+    flex: 0.9,
+    height: "100vh",
+    width: "100%",
+    paddingLeft: "2rem",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundImage: isMobile ? "none" : `url(${loginImage})`, 
+    backgroundRepeat: "no-repeat",
+    backgroundSize: "contain",
+    backgroundPosition: "left center",
+  }}
+></div>
+
+
     </div>
   );
 };
