@@ -36,7 +36,7 @@ const CreateNewTask = () => {
   const formCardStyle = {
     backgroundColor: "#ffffff",
     borderRadius: "12px",
-    padding: "20px",
+    padding: "10px",
     // boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
     maxWidth: "90%",
     margin: "0 auto",
@@ -77,8 +77,9 @@ fontSize:'0.79rem'
   };
 
   const [formData, setFormData] = useState({
-    category: "",
-    creator: "",
+    category: "General Task",
+    creator: "SRMIST-NCR",
+    creatorID:'SRM',
     currentSubmission: 0,
     dueDate: "",
     maxSubmission: 0,
@@ -154,8 +155,9 @@ fontSize:'0.79rem'
   
       // Reset form
       setFormData({
-        category: "",
-        creator: "",
+        category: "General Task",
+        creator: "SRMIST-NCR",
+        creatorID:'SRM',
         currentSubmission: 0,
         dueDate: "",
         maxSubmission: 0,

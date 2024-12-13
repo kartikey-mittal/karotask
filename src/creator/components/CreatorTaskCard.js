@@ -1,8 +1,12 @@
 import React from 'react';
 import { FaUserCircle, FaClock, FaCheckCircle, FaEdit, FaTrashAlt, FaRupeeSign, FaCalendarAlt } from 'react-icons/fa';
 import { NavLink } from 'react-router-dom';  // Import NavLink from react-router-dom
-
-const CreatorTaskCard = ({ id, title, date, status, price, dueDate, description, tags }) => {
+import DOMPurify from 'dompurify';
+const CreatorTaskCard = ({ id, title, date, status, price, dueDate, description, tags,maxSubmission }) => {
+  const sanitizedDescription = DOMPurify.sanitize(description, {
+    ALLOWED_TAGS: ['h1', 'h2', 'p', 'ol', 'li', 'br'],
+    ALLOWED_ATTR: []
+  });
   return (
     <div
       style={{
@@ -10,7 +14,7 @@ const CreatorTaskCard = ({ id, title, date, status, price, dueDate, description,
         border: '1px solid #e8e8e8',
         borderRadius: '8px',
         padding: '16px',
-        margin: '16px',
+        margin: '10px',
         boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
         boxSizing: 'border-box',
         backgroundColor: '#f7f9fb',
@@ -55,6 +59,17 @@ const CreatorTaskCard = ({ id, title, date, status, price, dueDate, description,
 >
 <NavLink 
   to={`/creator/dashboard/task/task-info/${id}`}  
+  state={{
+    id,
+    title,
+    date,
+    status,
+    price,
+    dueDate,
+    description,
+    tags,
+    maxSubmission,
+  }}
     style={{
       display: 'flex',
       alignItems: 'center',
@@ -79,7 +94,9 @@ const CreatorTaskCard = ({ id, title, date, status, price, dueDate, description,
             Due Date: {dueDate}
           </p>
         </div>
-        <span style={{ padding: 0, fontFamily: 'DMB' }}>{description}</span>
+        <span style={{ padding: 0, fontFamily: 'DMB' }}>
+  {DOMPurify.sanitize(description, { ALLOWED_TAGS: [] })}
+</span>
         <div style={{ marginTop: '8px', display: 'flex', flexWrap: 'wrap' }}>
           {tags.map((tag, index) => (
             <span

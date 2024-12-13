@@ -24,7 +24,7 @@ const TaskTable = ({ tasks }) => {
         <td>{task.price}</td>
         <td>{task.dueDate}</td>
         <td>
-          <NavLink className="action-button" to={`task-details/${task.id}`}> Start Task</NavLink>
+          <NavLink className="action-button" to={`task-details/${task.id}`} > Start Task</NavLink>
         </td>
         <td>
           <FaBookmark className="bookmark-icon" />
