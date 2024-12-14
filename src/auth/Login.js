@@ -134,7 +134,7 @@ const Login = () => {
         phone: formData.phone,
         role: activeTab,
         ...(activeTab === "user" && {
-            UID: "hkCpyjsu0vbob2WrQpxchij5Gk12",
+            UID: user.uid,
             age: 0,
             completedTask: 0,
             createdAt: new Date().toLocaleString("en-US", { timeZone: "UTC" }),
@@ -147,7 +147,7 @@ const Login = () => {
         })
     });
     
-
+    localStorage.setItem('User-UID', user.uid);
       // Send verification email
       await sendEmailVerification(user);
 
@@ -203,7 +203,7 @@ useEffect(() => {
         display: "flex",
         flexDirection: "row",
         alignItems: "center", 
-        width: isMobile ? "100%" : "auto", 
+        width: isMobile ? "100%" : "auto",
         justifyContent: "center",
         backgroundColor: "#f8f8f8",
        height: "100vh",

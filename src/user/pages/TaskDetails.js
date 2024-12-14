@@ -1,6 +1,10 @@
-// TaskDetails.js
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import DOMPurify from 'dompurify';
+import { useParams } from "react-router-dom";
+import { doc, getDoc, collection, query, where, getDocs,updateDoc } from "firebase/firestore";
+import { db } from "../../firebase"; // Make sure to import your Firestore instance
 import "./TaskDetails.css";
+import TaskTopLayer from "../components/UserTopLayer";
 import {
   FaLock,
   FaQuestionCircle,
@@ -12,181 +16,129 @@ import {
 
 const TaskDetails = () => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
-
+  
   const toggleDropdown = () => {
     setDropdownVisible(!dropdownVisible);
   };
+  const { id } = useParams(); // Get task document ID from the route
+  const UID = localStorage.getItem('User-UID'); // Static UID
+  const [taskDetails, setTaskDetails] = useState('hey'); // To store task details
+  const [taskStatus, setTaskStatus] = useState(null); // To store participant status
+
+  useEffect(() => {
+    const fetchTaskDetails = async () => {
+      try {
+        // 1. Fetch the main task document
+        const taskDocRef = doc(db, "tasks", id);
+        const taskDocSnap = await getDoc(taskDocRef);
+    
+        if (taskDocSnap.exists()) {
+          const data = taskDocSnap.data();
+          // Convert dueDate to a readable format
+          if (data.dueDate) {
+            data.dueDate = new Date(data.dueDate.seconds * 1000).toLocaleDateString(); // Convert to just the date
+          }
+          setTaskDetails(data);
+          console.log(data);
+        } else {
+          console.error("No such task document!");
+        }
+    
+        // 2. Query the participants subcollection for the specific UID
+        const participantsCollectionRef = collection(db, "tasks", id, "participants");
+        const q = query(participantsCollectionRef, where("__name__", "==", UID));
+        const querySnapshot = await getDocs(q);
+    
+        if (!querySnapshot.empty) {
+          const participantDoc = querySnapshot.docs[0];
+          setTaskStatus(participantDoc.data().status); // Save the status in state
+          console.log(participantDoc.data().status);
+        } else {
+          console.error("No participant document found for the given UID!");
+        }
+      } catch (error) {
+        console.error("Error fetching task details:", error);
+      }
+    };
+    
+
+    fetchTaskDetails();
+  }, [id, UID]);
+
+
+  const handleSubmitTask = async ()=>{
+
+    try {
+      // Reference the participant document
+      const participantDocRef = doc(db, "tasks", id, "participants", UID);
+      
+      // Update the `status` field to 'completed'
+      await updateDoc(participantDocRef, {
+        status: "completed",
+      });
+
+      const userDocRef = doc(db, "users", UID, "task", id);
+      
+      // Update the `status` field to 'completed'
+      await updateDoc(userDocRef, {
+        status: "completed",
+      });
+  
+      alert("Task status updated successfully!");
+      // Optionally update local state or UI here
+      setTaskStatus("completed");
+    } catch (error) {
+      alert("Error updating task status:", error);
+    }
+    const currentUserTaskInfo = JSON.parse(localStorage.getItem('userTaskInfo') || '[]');
+    const updatedUserTaskInfo = currentUserTaskInfo.map(task => 
+      task.id === taskDetails.taskID 
+        ? { ...task, status: 'completed' } 
+        : task
+    );
+    localStorage.setItem('userTaskInfo', JSON.stringify(updatedUserTaskInfo));
+  }
   return (
     <>
       <div className="container">
         <div className="main-container">
           <div className="about-task">
             <div className="topLayer">
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  padding: "10px 20px",
-                  backgroundColor: "#f4f4f4",
-                  borderBottom: "2px solid #ddd",
-                }}
-              >
-                <div style={{ display: "flex", alignItems: "center" }}>
-                  <FaTasks
-                    size="1.5em"
-                    style={{ marginRight: "10px", color: "#858585" }}
-                  />
-                  <h2
-                    style={{
-                      margin: "0",
-                      fontFamily: "DMM",
-                      fontSize: "1rem",
-                      color: "#858585",
-                    }}
-                  >
-                    Task Details
-                  </h2>
-                </div>
-
-                <div style={{ display: "flex", alignItems: "center" }}>
-                  <div className="search-bar">
-                    <FaSearch />
-                    <input type="text" placeholder="Search" />
-                  </div>
-                  <div style={{ position: "relative" }}>
-                    <FaUserCircle
-                      size="2em"
-                      color="#858585"
-                      onClick={toggleDropdown}
-                      style={{ cursor: "pointer" }}
-                    />
-                    {dropdownVisible && (
-                      <div
-                        style={{
-                          position: "absolute",
-                          top: "100%",
-                          right: 0,
-                          width: "200px",
-                          backgroundColor: "#fff",
-                          boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
-                          borderRadius: "5px",
-                          marginTop: "10px",
-                          zIndex: 1,
-                        }}
-                      >
-                        <div
-                          style={{
-                            padding: "10px",
-                            display: "flex",
-                            alignItems: "center",
-                            cursor: "pointer",
-                          }}
-                        >
-                          <FaUserCircle
-                            style={{ marginRight: "10px", color: "#bfbfbf" }}
-                          />
-                          <span>My account</span>
-                        </div>
-                        <div
-                          style={{
-                            padding: "10px",
-                            display: "flex",
-                            alignItems: "center",
-                            cursor: "pointer",
-                          }}
-                        >
-                          <FaLock
-                            style={{ marginRight: "10px", color: "#bfbfbf" }}
-                          />
-                          <span>Privacy</span>
-                        </div>
-                        <div
-                          style={{
-                            padding: "10px",
-                            display: "flex",
-                            alignItems: "center",
-                            cursor: "pointer",
-                          }}
-                        >
-                          <FaQuestionCircle
-                            style={{ marginRight: "10px", color: "#bfbfbf" }}
-                          />
-                          <span>Help & Support</span>
-                        </div>
-                        <div
-                          style={{
-                            padding: "10px",
-                            display: "flex",
-                            alignItems: "center",
-                            cursor: "pointer",
-                          }}
-                        >
-                          <FaSignOutAlt
-                            style={{ marginRight: "10px", color: "#bfbfbf" }}
-                          />
-                          <span>Logout</span>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
+              <TaskTopLayer/>
             </div>
             <div className="bottom">
               <div className="status-bar">
                 <div className="task-title">
-                  Forward/share WhatsApp channel post (WA8)
+              {taskDetails.name}
                 </div>
                 <div className="task-details">
                   <div className="task-item">
                     <div className="task-label">Status</div>
-                    <div className="status-badge in-progress">InProgress</div>
+                    <div className="status-badge in-progress">{taskStatus}</div>
                   </div>
                   <div className="divider"></div>
                   <div className="task-item">
                     <div className="task-label">Due Date</div>
-                    <div className="task-value">2025-03-31</div>
+                    <div className="task-value"> {taskDetails.dueDate}</div>
                   </div>
                   <div className="divider"></div>
                   <div className="task-item">
                     <div className="task-label">Price</div>
-                    <div className="task-value">₹3.00</div>
+                    <div className="task-value">   ₹ {taskDetails.price}</div>
                   </div>
                 </div>
               </div>
               <div class="task-details-bottom">
                 <h2>Tasks Overview</h2>
-                <h3>
-                  Forward/share WhatsApp channel post (WA8) ( #TSK000267 )
-                </h3>
-                <p>
-                  <strong>Description:</strong> Join WhatsApp channel and
-                  forward posts.
-                </p>
-                <ol>
-                  <li>
-                    Join WhatsApp channel here:
-                    <a
-                      href="https://www.whatsapp.com/channel/0029VatZvQA29756YXJsYl30"
-                      target="_blank"
-                    >
-                      WhatsApp Channel Link
-                    </a>
-                  </li>
-                  <li>
-                    Forward any post to your family/friend/college group. Group
-                    should have a minimum of 30 members.{" "}
-                    <strong>
-                      DO NOT forward the same post that you have forwarded
-                      before.
-                    </strong>
-                  </li>
-                  <li>
-                    Take a screenshot of your post and group name and upload the
-                    screenshot after clicking on ‘Complete task’.
-                  </li>
-                </ol>
+            
+      
+                      <span 
+                        dangerouslySetInnerHTML={{
+                          __html: DOMPurify.sanitize(taskDetails.overview)
+                        }} 
+                      />
+                  
+                
                 <p>
                   <strong>Note:</strong> Do not delete the post from the group
                   as we can re-verify the forwarded post.
@@ -195,7 +147,7 @@ const TaskDetails = () => {
                   <strong>Url:</strong> null
                   <button class="copy-btn">📋</button>
                 </div>
-                <button class="submit-task">Submit Task</button>
+                <button class="submit-task" onClick={handleSubmitTask} >Submit Task</button>
               </div>
             </div>
           </div>
