@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { RiArrowDropDownLine, RiArrowDropUpLine } from 'react-icons/ri';
-import { FaUserCircle, FaLock, FaQuestionCircle, FaSignOutAlt} from 'react-icons/fa';
+import { FaQuestionCircle } from 'react-icons/fa';
 import UserTopLayer from '../components/UserTopLayer';
-
 
 const TopLayer = () => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
@@ -11,70 +10,107 @@ const TopLayer = () => {
     setDropdownVisible(!dropdownVisible);
   };
 
-  return (
-    <UserTopLayer name="FAQs" icon={FaQuestionCircle} />
-  );
+  return <UserTopLayer name="FAQs" icon={FaQuestionCircle} />;
 };
 
 const FAQSection = ({ title, questions, headingColor }) => {
   const [openQuestion, setOpenQuestion] = useState(null);
+  const [isMobile, setIsMobile] = useState(false);
 
   const toggleQuestion = (index) => {
     setOpenQuestion(openQuestion === index ? null : index);
   };
 
+  
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768); 
+    };
+
+    
+    handleResize();
+
+    window.addEventListener('resize', handleResize);
+
+    
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return (
-    <div style={{ marginBottom: '30px' }}>
-      {/* Section Title with dynamic color */}
-      <h2 style={{ marginBottom: '20px', color: headingColor }}>{title}</h2>
+    <div
+      style={{
+        marginTop: '30px',
+        marginBottom: '30px',
+        padding: isMobile ? '15px' : '20px', 
+        backgroundColor: '#ffffff',
+        borderRadius: '12px',
+        border: '.05rem solid #f4f4f4',
+        boxShadow: '0 8px 16px rgba(0, 0, 0, 0.1)',
+      }}
+    >
+      <h2
+        style={{
+          marginBottom: '20px',
+          color: headingColor,
+          fontSize: isMobile ? '1.5rem' : '1.8rem',
+          fontWeight: 'bold',
+        }}
+      >
+        {title}
+      </h2>
       {questions.map((question, index) => (
         <div
           key={index}
           style={{
-            marginBottom: '10px',
-            padding: '10px',
-            backgroundColor: '#f7f9fb',
-            border: '1px solid #ddd',
-            borderRadius: '5px',
+            marginBottom: '20px',
+            padding: isMobile ? '15px' : '20px', 
+            backgroundColor: '#ffffff',
+            borderRadius: '12px',
+            border: '.05rem solid #c8c8c8',
+            boxShadow: '0 8px 16px rgba(0, 0, 0, 0.1)',
+            transition: 'box-shadow 0.3s ease, transform 0.3s ease',
+            cursor: 'pointer',
           }}
+          onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 12px 24px rgba(0, 0, 0, 0.2)'}
+          onMouseLeave={(e) => e.currentTarget.style.boxShadow = '0 8px 16px rgba(0, 0, 0, 0.1)'}
         >
-          {/* Question Row */}
           <div
             style={{
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
               cursor: 'pointer',
-              fontWeight: 'bold',
+              fontWeight: '600',
             }}
             onClick={() => toggleQuestion(index)}
           >
-            <span>{question.question}</span>
+            <span style={{ fontSize: isMobile ? '1rem' : '1.2rem', color: '#333' }}>
+              {question.question}
+            </span>
             <button
               style={{
                 background: 'none',
                 border: 'none',
-                fontSize: '1.5rem',
-                color: '#858585',
+                fontSize: isMobile ? '1.5rem' : '1.8rem', 
+                color: '#7e7e7e',
                 cursor: 'pointer',
+                transition: 'color 0.3s ease',
               }}
             >
-              {openQuestion === index ? (
-                <RiArrowDropUpLine />
-              ) : (
-                <RiArrowDropDownLine />
-              )}
+              {openQuestion === index ? <RiArrowDropUpLine /> : <RiArrowDropDownLine />}
             </button>
           </div>
-
-          {/* Answer */}
           {openQuestion === index && (
             <div
               style={{
-                marginTop: '10px',
-                padding: '10px',
-                backgroundColor: '#fff',
-                borderRadius: '5px',
+                marginTop: '15px',
+                padding: '15px',
+                backgroundColor: '#f9f9f9',
+                borderRadius: '8px',
+                lineHeight: '1.6',
+                color: '#555',
+                fontSize: isMobile ? '0.9rem' : '1rem', 
+                transition: 'opacity 0.3s ease',
               }}
             >
               {question.answer}
@@ -112,38 +148,29 @@ const FAQ = () => {
   ];
 
   return (
-    <div style={{ height: '100%', width: '100%', }}>
+    <div
+      style={{
+        maxHeight: 'calc(100vh - 20px)',
+        backgroundColor: "#f4f4f4",
+        padding: '20px',
+        overflowY: 'auto',
+        overflowX: 'hidden',
+        
+      }}
+    >
       <TopLayer />
-      <div style={{ display: 'flex', height: '100vh' }}>
-        <div
-          style={{
-            padding: '20px',
-            height: '100%',
-            width: '100%',
-            overflowY: 'scroll',
-            scrollBehavior: 'smooth',
-            scrollbarWidth: 'none', // For Firefox
-            msOverflowStyle: 'none', // For IE and Edge
-          }}
-        >
-          <style>
-            {`
-              /* For Chrome, Edge, and Safari */
-              div::-webkit-scrollbar {
-                display: none;
-              }
-            `}
-          </style>
-          <FAQSection title="Sign Up FAQ" questions={signUpQuestions} headingColor="#ff4081" />
-          <FAQSection title="Task FAQ" questions={taskQuestions} headingColor="#ff4081" />
-          <FAQSection title="Payment FAQ" questions={paymentQuestions} headingColor="#ff4081" />
-        </div>
+      <div
+        style={{
+          maxWidth: '1200px',
+          margin: '0 auto',
+        }}
+      >
+        <FAQSection title="Sign Up FAQ" questions={signUpQuestions} headingColor="#ff4081" />
+        <FAQSection title="Task FAQ" questions={taskQuestions} headingColor="#ff4081" />
+        <FAQSection title="Payment FAQ" questions={paymentQuestions} headingColor="#ff4081" />
       </div>
     </div>
   );
 };
 
 export default FAQ;
-
-
-
