@@ -121,7 +121,7 @@ const DashUI = () => {
   const [ongoingTasks, setOngoingTasks] = useState(0);
   const [pendingApprovalTasks, setPendingApprovalTasks] = useState(0);
 
-  const UID = 'hkCpyjsu0vbob2WrQpxchij5Gk12'; // Replace with dynamic UID
+  const UID = localStorage.getItem('User-UID'); // Replace with dynamic UID
 
   useEffect(() => {
     const fetchTasks = async () => {

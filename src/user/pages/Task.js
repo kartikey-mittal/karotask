@@ -114,7 +114,7 @@ const Task = () => {
     'Completed Tasks': [],
   });
   const [activeTab, setActiveTab] = useState('Available Tasks');
-  const UID = 'hkCpyjsu0vbob2WrQpxchij5Gk12'; // Replace with dynamic UID logic if needed
+  const UID = localStorage.getItem('User-UID');// Replace with dynamic UID logic if needed
 
   useEffect(() => {
     const fetchTasks = async () => {
