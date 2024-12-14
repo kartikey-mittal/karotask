@@ -150,9 +150,9 @@ const FAQ = () => {
   return (
     <div
       style={{
-        maxHeight: 'calc(100vh - 20px)',
+        maxHeight: 'calc(100vh - 5px)',
         backgroundColor: "#f4f4f4",
-        padding: '20px',
+        padding: '.1rem',
         overflowY: 'auto',
         overflowX: 'hidden',
         
