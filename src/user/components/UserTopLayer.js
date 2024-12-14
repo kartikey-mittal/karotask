@@ -22,7 +22,7 @@ const TaskTopLayer = ({ name, icon: Icon }) => {
   };
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 20px', backgroundColor: '#f4f4f4', borderBottom: '2px solid #ddd' }}>
+    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '.5rem .5rem', backgroundColor: '#f4f4f4', borderBottom: '2px solid #ddd',boxShadow: "0px 2px 2px rgba(0, 0, 0, 0.1)" }}>
       <div style={{ display: 'flex', alignItems: 'center' }}>
         {Icon && <Icon size="1.5em" style={{ marginRight: '10px', color: '#858585' }} />}
         <h2 style={{ margin: '0', fontFamily: 'DMM', fontSize: '1rem', color: '#858585' }}>{name}</h2>
