@@ -83,7 +83,7 @@ const UserSideMenu = ({ children }) => {
                 display: "flex",
                 alignItems: "center",
                 padding: "10px",
-                justifyContent: isMobile ?'center':'start',
+                justifyContent:  sidebarOpen || !isMobile ?'start':'center',
                 borderRadius: "10px",
                 backgroundColor: isActive ? "#2f2f2f" : "#f2f2f2",
               })}
@@ -109,7 +109,7 @@ const UserSideMenu = ({ children }) => {
                 display: "flex",
                 alignItems: "center",
                 padding: "10px",
-                justifyContent: isMobile ?'center':'start',
+                justifyContent:  sidebarOpen || !isMobile ?'start':'center',
                 borderRadius: "10px",
                 backgroundColor: isActive ? "#2f2f2f" : "#f2f2f2",
               })}
@@ -135,7 +135,7 @@ const UserSideMenu = ({ children }) => {
                 alignItems: "center",
                 padding: "10px",
                 borderRadius: "10px",
-                justifyContent: isMobile ?'center':'start',
+                justifyContent:  sidebarOpen || !isMobile ?'start':'center',
                 backgroundColor: isActive ? "#2f2f2f" : "#f2f2f2",
               })}
             >
@@ -159,7 +159,7 @@ const UserSideMenu = ({ children }) => {
                 display: "flex",
                 alignItems: "center",
                 padding: "10px",
-                justifyContent: isMobile ?'center':'start',
+                justifyContent:  sidebarOpen || !isMobile ?'start':'center',
                 borderRadius: "10px",
                 backgroundColor: isActive ? "#2f2f2f" : "#f2f2f2",
               })}
