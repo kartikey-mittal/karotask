@@ -8,8 +8,10 @@ import { FaTasks, FaClipboardList, FaTag, FaDollarSign, FaRupeeSign ,FaWindowMax
 import ContentEditable from "react-contenteditable";
 import ReactQuill from "react-quill"; // Import ReactQuill
 import "react-quill/dist/quill.snow.css"; // Import Quill styles
+import { NavLink } from 'react-router-dom';
 
 const CreateNewTask = () => {
+  const UID = localStorage.getItem('Creator-UID');
   const containerStyle = {
     display: "flex",
     flexDirection: "column",
@@ -78,8 +80,8 @@ fontSize:'0.79rem'
 
   const [formData, setFormData] = useState({
     category: "General Task",
-    creator: "SRMIST-NCR",
-    creatorID:'SRM',
+    creator: "",
+    creatorID:UID,
     currentSubmission: 0,
     dueDate: "",
     maxSubmission: 0,
@@ -87,7 +89,7 @@ fontSize:'0.79rem'
     overview: "",
     price: 0,
     priority: "",
-    status: "",
+    status: "under-review",
     taskID: "1",
     type: "",
     uploadedFile: null,
@@ -150,14 +152,22 @@ fontSize:'0.79rem'
         createdAt: Timestamp.now(),
         dueDate: formData.dueDate ? Timestamp.fromDate(new Date(formData.dueDate)) : null,
       });
-  
+     
       alert("Task created successfully!");
-  
+      <NavLink
+      to={`/task`}
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        color: 'inherit',
+        textDecoration: 'none',
+      }}
+    ></NavLink>
       // Reset form
       setFormData({
         category: "General Task",
-        creator: "SRMIST-NCR",
-        creatorID:'SRM',
+        // creator: "SRMIST-NCR",
+        creatorID:UID,
         currentSubmission: 0,
         dueDate: "",
         maxSubmission: 0,

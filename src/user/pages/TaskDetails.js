@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { doc, getDoc, collection, query, where, getDocs,updateDoc } from "firebase/firestore";
 import { db } from "../../firebase"; // Make sure to import your Firestore instance
 import "./TaskDetails.css";
-import TaskTopLayer from "../components/UserTopLayer";
+import UserTopLayer from '../components/UserTopLayer';
 import {
   FaLock,
   FaQuestionCircle,
@@ -74,14 +74,14 @@ const TaskDetails = () => {
       
       // Update the `status` field to 'completed'
       await updateDoc(participantDocRef, {
-        status: "completed",
+        status: "need-approval",
       });
 
       const userDocRef = doc(db, "users", UID, "task", id);
       
       // Update the `status` field to 'completed'
       await updateDoc(userDocRef, {
-        status: "completed",
+        status: "need-approval",
       });
   
       alert("Task status updated successfully!");
@@ -100,17 +100,27 @@ const TaskDetails = () => {
   }
   return (
     <>
-      <div className="container">
-        <div className="main-container">
-          <div className="about-task">
-            <div className="topLayer">
-              <TaskTopLayer/>
-            </div>
-            <div className="bottom">
+      <div className="">
+      <div style={{ position: 'fixed',width: '100%', zIndex: 0 }}>
+      <UserTopLayer name="Tasks" icon={FaTasks} />
+    </div>
+       <div
+      style={{
+        marginTop: '0px', // Adjust this based on the height of TopLayer
+        height: 'calc(100vh - 60px)', // Adjust height dynamically
+        overflowY: 'auto',
+        padding: '15px',
+        fontFamily: 'DMM, sans-serif',
+      }}
+       >
+        <div className="main-container" style={{}}>
+          <div className="about-task" style={{width:"80%",}}>
+         
+          <div className="bottom">
               <div className="status-bar">
-                <div className="task-title">
+                <h2 className="task-title" style={{fontFamily:'DMB'}}>
               {taskDetails.name}
-                </div>
+                </h2>
                 <div className="task-details">
                   <div className="task-item">
                     <div className="task-label">Status</div>
@@ -129,10 +139,10 @@ const TaskDetails = () => {
                 </div>
               </div>
               <div class="task-details-bottom">
-                <h2>Tasks Overview</h2>
+                <h2 className="task-title" style={{color:"#757575",fontFamily:'DMM',fontSize:"1rem"}}>Tasks Overview</h2>
             
       
-                      <span 
+                      <span style={{fontFamily:'DMM'}}
                         dangerouslySetInnerHTML={{
                           __html: DOMPurify.sanitize(taskDetails.overview)
                         }} 
@@ -151,7 +161,8 @@ const TaskDetails = () => {
               </div>
             </div>
           </div>
-          <div class="about-client">
+          <div className="bottom" style={{}}>
+          <div class="about-client" >
             <h2>About Client</h2>
             <div class="client-header">
               <div class="client-image">
@@ -162,14 +173,8 @@ const TaskDetails = () => {
                 />
               </div>
               <h3 class="client-name">Justin Durby</h3>
-              <div class="client-rating">
-                <span class="star">★</span>
-                <span class="star">★</span>
-                <span class="star">★</span>
-                <span class="star">★</span>
-                <span class="star-empty">☆</span>
-              </div>
-              <div class="identity-status">Identity Verified</div>
+           
+              <span class="identity-status" style={{color:"#fff",fontFamily:'DMB',backgroundColor:"#238b41",paddingInline:"10px",borderRadius:'10px'}}> Verified</span>
             </div>
             <div class="client-stats">
               <div class="stat-item">
@@ -231,7 +236,9 @@ const TaskDetails = () => {
               </li>
             </ul>
           </div>
+          </div>
         </div>
+      </div>
       </div>
     </>
   );

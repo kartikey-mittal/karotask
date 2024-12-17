@@ -269,42 +269,58 @@ const DashUI = () => {
   };
 
   return (
-    <>
+  <>
+    {/* Fixed Top Layer */}
+    <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', zIndex: 10, backgroundColor: '#fff' }}>
       <TopLayer />
-      <div style={{ fontFamily: 'DMM, sans-serif', padding: '20px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
-          <StatBox icon={<FaTasks size="2em" />} title="Total Tasks" value={totalTasks} color="#edf0ff" />
-          <StatBox icon={<FaSpinner size="2em" />} title="Ongoing Tasks" value={ongoingTasks} color="#ffe8ef" />
-          <StatBox icon={<FaRegClock size="2em" />} title="Pending Approval" value={pendingApprovalTasks} color="#fcd4c8" />
-          <StatBox icon={<FaRupeeSign size="2em" />} title="My Earnings" value="₹15,000" color="#fff3d4" />
-        </div>
-        <div
-          style={{
-            backgroundColor: '#E8F5E9',
-            padding: '10px',
-            borderRadius: '10px',
-            marginBottom: '20px',
-            display: 'flex',
-            alignItems: 'center',
-          }}
-        >
-          <FaBell style={{ marginRight: '10px', color: '#a30b4d' }} />
-          <p style={{ margin: '0', flexGrow: '1' }}>
-            You need to update your KYC, profile, social media links, and UPI; only then you'll be able to make withdraw requests.
-          </p>
-          <FaTimes style={{ cursor: 'pointer' }} />
-        </div>
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <TaskStatus 
-            completed={pendingApprovalTasks} 
-            inProgress={ongoingTasks} 
-            pendingApproval={0} 
-          />
-          {loading ? <p>Loading tasks...</p> : <TaskTable tasks={tasks} onStartTask={handleStartTask} />}
-        </div>
+    </div>
+
+    {/* Scrollable Content */}
+    <div
+      style={{
+        marginTop: '60px', // Adjust this based on the height of TopLayer
+        height: 'calc(100vh - 60px)', // Adjust height dynamically
+        overflowY: 'auto',
+        padding: '20px',
+        fontFamily: 'DMM, sans-serif',
+      }}
+    >
+      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
+        <StatBox icon={<FaTasks size="2em" />} title="Total Tasks" value={totalTasks} color="#edf0ff" />
+        <StatBox icon={<FaSpinner size="2em" />} title="Ongoing Tasks" value={ongoingTasks} color="#ffe8ef" />
+        <StatBox icon={<FaRegClock size="2em" />} title="Pending Approval" value={pendingApprovalTasks} color="#fcd4c8" />
+        <StatBox icon={<FaRupeeSign size="2em" />} title="My Earnings" value="₹15,000" color="#fff3d4" />
       </div>
-    </>
-  );
+
+      <div
+        style={{
+          backgroundColor: '#E8F5E9',
+          padding: '10px',
+          borderRadius: '10px',
+          marginBottom: '20px',
+          display: 'flex',
+          alignItems: 'center',
+        }}
+      >
+        <FaBell style={{ marginRight: '10px', color: '#a30b4d' }} />
+        <p style={{ margin: '0', flexGrow: '1' }}>
+          You need to update your KYC, profile, social media links, and UPI; only then you'll be able to make withdraw requests.
+        </p>
+        <FaTimes style={{ cursor: 'pointer' }} />
+      </div>
+
+      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <TaskStatus 
+          completed={pendingApprovalTasks} 
+          inProgress={ongoingTasks} 
+          pendingApproval={0} 
+        />
+        {loading ? <p>Loading tasks...</p> : <TaskTable tasks={tasks.slice(0, 5)} onStartTask={handleStartTask} />}
+      </div>
+    </div>
+  </>
+);
+
 };
 
 export default DashUI;

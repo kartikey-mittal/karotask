@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { FaUserCircle, FaLock, FaQuestionCircle, FaSignOutAlt,FaTasks } from 'react-icons/fa';
+import { FaUserCircle, FaLock, FaQuestionCircle, FaSignOutAlt } from 'react-icons/fa';
 import { NavLink } from 'react-router-dom';
-import { auth } from '../../firebase.js';
+import { auth } from '../../firebase.js'; 
 
-const TaskTopLayer = ({ name, icon: Icon }) => {
+const AdminTopLayer = ({ name, icon: Icon }) => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
 
   const toggleDropdown = () => {
@@ -22,12 +22,12 @@ const TaskTopLayer = ({ name, icon: Icon }) => {
   };
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '5px 20px', backgroundColor: '#f4f4f4', borderBottom: '2px solid #ddd' ,}}>
+    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 20px', backgroundColor: '#f4f4f4', borderBottom: '2px solid #ddd' }}>
       <div style={{ display: 'flex', alignItems: 'center' }}>
         {Icon && <Icon size="1.5em" style={{ marginRight: '10px', color: '#858585' }} />}
         <h2 style={{ margin: '0', fontFamily: 'DMM', fontSize: '1rem', color: '#858585' }}>{name}</h2>
       </div>
-      <div style={{  }}>
+      <div style={{ position: 'relative' }}>
         <FaUserCircle size="2em" color='#858585' onClick={toggleDropdown} style={{ cursor: 'pointer' }} />
         {dropdownVisible && (
           <div style={{ position: 'absolute', top: '100%', right: 0, width: '200px', backgroundColor: '#fff', boxShadow: '0 2px 10px rgba(0,0,0,0.1)', borderRadius: '5px', marginTop: '10px', zIndex: 1 }}>
@@ -56,4 +56,4 @@ const TaskTopLayer = ({ name, icon: Icon }) => {
   );
 };
 
-export default TaskTopLayer;
+export default AdminTopLayer;

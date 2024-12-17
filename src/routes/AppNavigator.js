@@ -4,6 +4,7 @@ import Login from "../auth/Login";
 import ProtectedRoute from "./ProtectedRoute";
 import UserNavigator from "../user/UserNavigator";
 import CreatorNavigator from "../creator/CreatorNavigator";
+import AdminNavigator from "../admin/AdminNavigator";
 
 const AppNavigator = () => {
   return (
@@ -24,6 +25,14 @@ const AppNavigator = () => {
           element={
             // <ProtectedRoute>
               <CreatorNavigator />
+            // </ProtectedRoute>
+          }
+        />
+         <Route
+          path="/admin/*"
+          element={
+            // <ProtectedRoute>
+              <AdminNavigator />
             // </ProtectedRoute>
           }
         />

@@ -7,7 +7,7 @@ const TaskStatus = ({ completed, inProgress, pendingApproval, role }) => {
   const isCreator = role === 'creator';
 
   const data = {
-    labels: ['Completed', 'In Progress', isCreator ? 'Rejected' : 'Pending Approval'],
+    labels: ['Completed', 'In Progress', isCreator ? 'Under-Review' : 'Pending Approval'],
     datasets: [
       {
         data: [completed, inProgress, pendingApproval],
@@ -49,7 +49,7 @@ const TaskStatus = ({ completed, inProgress, pendingApproval, role }) => {
           <span>{inProgress}%</span>
         </div>
         <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem' }}>
-          <span style={{ color: '#2f2f2f', fontSize: '0.8rem' }}>● {isCreator ? 'Rejected' : 'Pending Approval'}</span>
+          <span style={{ color: '#2f2f2f', fontSize: '0.8rem' }}>● {isCreator ? 'Under-Review' : 'Pending Approval'}</span>
           <span>{pendingApproval}%</span>
         </div>
       </div>

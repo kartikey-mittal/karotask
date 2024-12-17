@@ -8,7 +8,13 @@ const CreatorNavigator = () => {
   return (
     <div style={{ display: "flex", height: "100vh" }}>
       {/* Sidebar */}
-      <div style={{ backgroundColor: "#f4f4f4", padding: "0px", height: "100%" }}>
+    <div
+        style={{
+          backgroundColor: "#f4f4f4", // Sidebar background
+          overflow: "hidden", // Prevents sidebar content overflow
+          boxShadow: "2px 0 5px rgba(0,0,0,0.1)", // Optional shadow for styling
+        }}
+      >
         <CreatorSideMenu />
       </div>
 
