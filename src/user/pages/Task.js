@@ -148,7 +148,36 @@ const Task = () => {
 
   return (
     <>
-      <UserTopLayer name="Tasks" icon={FaTasks} />
+  <div 
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100vh',
+        overflow: 'hidden',
+      }}
+    >
+       <div 
+        style={{
+          position: 'sticky',
+          top: 0,
+          zIndex: 100,
+          width: '100%',
+        }}
+      >
+      <UserTopLayer name="Tasks" icon={FaTasks} /></div>
+      <div 
+        style={{
+          flexGrow: 1,
+          overflowY: 'auto',
+          padding: '20px',
+          fontFamily: 'DMM, sans-serif',
+          // Custom Scrollbar Styles
+          scrollbarWidth: 'thin',
+          scrollbarColor: '#d63384 #f1f1f1',
+        }}
+        // WebKit (Chrome, Safari, newer versions of Opera) scrollbar styling
+        className="custom-scrollbar"
+      >
       <div className="task-container">
         <div className="tabs">
           {Object.keys(tasks).map((tab) => (
@@ -168,6 +197,8 @@ const Task = () => {
             <p className="empty-state">No tasks available in this category.</p>
           )}
         </div>
+      </div>
+      </div>
       </div>
       <style jsx>{`
         .task-container {
@@ -210,6 +241,22 @@ const Task = () => {
         .empty-state {
           text-align: center;
           color: #aaa;
+        }
+           .custom-scrollbar::-webkit-scrollbar {
+          width: 6px; /* Thin scrollbar */
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: #f1f1f1; /* Light background for the track */
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: #d63384; /* Red/pinkish color for the scrollbar */
+          border-radius: 3px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: #a30b4d; /* Slightly darker on hover */
         }
         @media (max-width: 768px) {
           .tabs {

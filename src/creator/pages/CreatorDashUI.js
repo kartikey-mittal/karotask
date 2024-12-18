@@ -3,12 +3,15 @@ import StatsBox from '../../components/StatsBox';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { FaTasks, FaSpinner, FaRegClock, FaRupeeSign, FaBan, FaBell, FaTimes, FaTachometerAlt } from 'react-icons/fa';
+import Loading from "../../components/Loading";
 
 import CreatorTopLayer from '../components/CreatorTopLayer';
 import LatestTask from '../../components/LatestTask';
 import TaskStatus from '../../components/TaskStatus';
 
 const CreatorDashUI = () => {
+  const UID = localStorage.getItem('Creator-UID');
+  const [loading, setLoading] = useState(true); // New loading state
   const [creatorOngoingTasks, setCreatorOngoingTasks] = useState([]);
   const [creatorCompletedTasks, setCreatorCompletedTasks] = useState([]);
   const [creatorPendingTasks, setCreatorPendingTasks] = useState([]);
@@ -32,13 +35,14 @@ const CreatorDashUI = () => {
 
   useEffect(() => {
     const fetchTasks = async () => {
+      setLoading(true);
       try {
         const tasksRef = collection(db, 'tasks');
         
         // Query for tasks where creatorID is 'SRM' and due date has not expired
         const tasksQuery = query(
           tasksRef, 
-          where('creatorID', '==', 'SRM'),
+          where('creatorID', '==', UID),
           where('dueDate', '>=', new Date()) // Only get tasks with future or current due dates
         );
 
@@ -67,7 +71,7 @@ const CreatorDashUI = () => {
               ongoingTasks.push(formattedTask);
             } else if (taskData.status === 'completed') {
               completedTasks.push(formattedTask);
-            } else if (taskData.status === 'pending') {
+            } else if (taskData.status === 'under-review') {
               pendingTasks.push(formattedTask);
             }
 
@@ -84,17 +88,27 @@ const CreatorDashUI = () => {
         });
 
         setCreatorOngoingTasks(ongoingTasks);
+        console.log(creatorOngoingTasks)
         setCreatorCompletedTasks(completedTasks);
         setCreatorPendingTasks(pendingTasks);
         setCreatorRejectedTasksCount(rejectedTasksCount);
         setLatestTasks(latestTasksData);
       } catch (error) {
         console.error('Error fetching tasks:', error);
+      } finally {
+        setLoading(false); // Hide loading popup
       }
     };
 
     fetchTasks();
   }, []);
+
+  if (loading) {
+    return <Loading />; // Show loading component
+  }
+  const TopLayer = () => {
+    return <CreatorTopLayer name="Dashboard" icon={FaTasks} />;
+  };
 
   const stats = [
     { 
@@ -157,7 +171,10 @@ const CreatorDashUI = () => {
             pendingApproval={creatorPendingTasks.length} 
             role="creator" 
           />
-          <LatestTask tasks={latestTasks} role="creator" />
+          {/* <div>{latestTasks.length}</div> */}
+        
+    <LatestTask tasks={latestTasks} role="creator" />
+  
         </div>
       </div>
     </>

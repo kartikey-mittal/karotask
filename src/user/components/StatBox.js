@@ -8,7 +8,7 @@ const StatBox = ({ icon, title, value,color }) => {
       borderRadius: '10px',
       width: '200px',
       boxShadow: '0 4px 2px rgba(0, 0, 0, 0.1)',
-      margin: '10px',
+      marginBottom: '10px',
       position: 'relative',border:'0.2px solid #e5e5e5'
     }}>
       <div style={{ position: 'absolute', top: '20px', right: '15px', fontSize:"0.5rem" ,color:"#7a7a7a"}}>

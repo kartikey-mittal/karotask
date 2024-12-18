@@ -9,7 +9,7 @@ import {
 import logo from "./../../assets/karoTask1.png"; // Main logo
 import mobileLogo from "./../../assets/karoTaskMobile.png"; // Mobile logo
 
-const UserSideMenu = ({ children }) => {
+const AdminSideMenu = ({ children }) => {
   const [isMobile, setIsMobile] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -42,13 +42,13 @@ const UserSideMenu = ({ children }) => {
       {/* Sidebar */}
       <div
         style={{
-          width: sidebarOpen || !isMobile ? "200px" : "60px", // Adjust width based on state	
+          width: sidebarOpen || !isMobile ? "180px" : "60px", // Adjust width based on state
           borderRight: "1px solid #ddd",
           backgroundColor: "#f4f4f4",
           // transition: "width 0.3s ease",
           position: "fixed", // Sidebar remains fixed
           height: "100vh",
-          zIndex: 999,
+          zIndex: 999,padding:'10px'
         }}
       >
         {/* Logo */}
@@ -76,14 +76,13 @@ const UserSideMenu = ({ children }) => {
         <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
           <li style={{ marginBottom: "10px" }}>
             <NavLink
-              to="/user/dashboard"
+              to="/admin/dashboard"
               style={({ isActive }) => ({
                 textDecoration: "none",
                 color: isActive ? "white" : "#000",
                 display: "flex",
                 alignItems: "center",
                 padding: "10px",
-                justifyContent:  sidebarOpen || !isMobile ?'start':'center',
                 borderRadius: "10px",
                 backgroundColor: isActive ? "#2f2f2f" : "#f2f2f2",
               })}
@@ -102,14 +101,13 @@ const UserSideMenu = ({ children }) => {
 
           <li style={{ marginBottom: "10px" }}>
             <NavLink
-              to="/user/dashboard/task"
+              to="/admin/dashboard/task"
               style={({ isActive }) => ({
                 textDecoration: "none",
                 color: isActive ? "white" : "#000",
                 display: "flex",
                 alignItems: "center",
                 padding: "10px",
-                justifyContent:  sidebarOpen || !isMobile ?'start':'center',
                 borderRadius: "10px",
                 backgroundColor: isActive ? "#2f2f2f" : "#f2f2f2",
               })}
@@ -127,7 +125,7 @@ const UserSideMenu = ({ children }) => {
 
           <li style={{ marginBottom: "10px" }}>
             <NavLink
-              to="/user/dashboard/earning"
+              to="/admin/dashboard/payments"
               style={({ isActive }) => ({
                 textDecoration: "none",
                 color: isActive ? "white" : "#000",
@@ -135,7 +133,6 @@ const UserSideMenu = ({ children }) => {
                 alignItems: "center",
                 padding: "10px",
                 borderRadius: "10px",
-                justifyContent:  sidebarOpen || !isMobile ?'start':'center',
                 backgroundColor: isActive ? "#2f2f2f" : "#f2f2f2",
               })}
             >
@@ -146,34 +143,11 @@ const UserSideMenu = ({ children }) => {
                   fontSize: "20px",
                 }}
               />
-              {sidebarOpen || !isMobile ? "Earnings" : null}
+              {sidebarOpen || !isMobile ? "Payments" : null}
             </NavLink>
           </li>
 
-          <li style={{ marginBottom: "10px" }}>
-            <NavLink
-              to="/user/dashboard/faq"
-              style={({ isActive }) => ({
-                textDecoration: "none",
-                color: isActive ? "white" : "#000",
-                display: "flex",
-                alignItems: "center",
-                padding: "10px",
-                justifyContent:  sidebarOpen || !isMobile ?'start':'center',
-                borderRadius: "10px",
-                backgroundColor: isActive ? "#2f2f2f" : "#f2f2f2",
-              })}
-            >
-              <FaQuestionCircle
-                style={{
-                  marginRight: sidebarOpen || !isMobile ? "10px" : "0",
-                  color: "darkgray",
-                  fontSize: "20px",
-                }}
-              />
-              {sidebarOpen || !isMobile ? "FAQ" : null}
-            </NavLink>
-          </li>
+          
         </ul>
       </div>
 
@@ -193,5 +167,5 @@ const UserSideMenu = ({ children }) => {
   );
 };
 
-export default UserSideMenu;
+export default AdminSideMenu;
 

@@ -110,6 +110,7 @@ const DashUI = () => {
   const [screenWidth, setScreenWidth] = useState(window.innerWidth); 
 
   const UID = localStorage.getItem('User-UID'); // Replace with dynamic UID
+ 
 
   useEffect(() => {
     const handleResize = () => setScreenWidth(window.innerWidth);
@@ -244,17 +245,49 @@ const DashUI = () => {
   const isMobile = screenWidth <= 768;
 
   return (
-    <>
-      <TopLayer />
-      <div style={{ fontFamily: 'DMM, sans-serif', padding: '20px' }}>
+  <>
+    <div 
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100vh',
+        overflow: 'hidden',
+      }}
+    >
+      {/* Fixed Top Layer */}
+      <div 
+        style={{
+          position: 'sticky',
+          top: 0,
+          zIndex: 100,
+          width: '100%',
+        }}
+      >
+        <UserTopLayer name="Dashboard" icon={FaTasks} />
+      </div>
+
+      {/* Scrollable Content */}
+      <div 
+        style={{
+          flexGrow: 1,
+          overflowY: 'auto',
+          padding: '20px',
+          fontFamily: 'DMM, sans-serif',
+          // Custom Scrollbar Styles
+          scrollbarWidth: 'thin',
+          scrollbarColor: '#d63384 #f1f1f1',
+        }}
+        // WebKit (Chrome, Safari, newer versions of Opera) scrollbar styling
+        className="custom-scrollbar"
+      >
         <div 
           style={{
             display: 'flex', 
             flexDirection: isMobile ? 'column' : 'row', 
             justifyContent: 'space-between', 
             marginBottom: '20px',
-           flexWrap: isMobile ? 'nowrap' : 'wrap',
-    overflowX: 'hidden'
+            flexWrap: isMobile ? 'wrap' : 'wrap',
+            overflowX: 'hidden'
           }}
         >
           <StatBox icon={<FaTasks size="2em" />} title="Total Tasks" value={totalTasks} color="#edf0ff" />
@@ -262,6 +295,7 @@ const DashUI = () => {
           <StatBox icon={<FaRegClock size="2em" />} title="Pending Approval" value={pendingApprovalTasks} color="#fcd4c8" />
           <StatBox icon={<FaRupeeSign size="2em" />} title="My Earnings" value="₹15,000" color="#fff3d4" />
         </div>
+
         <div 
           style={{
             backgroundColor: '#E8F5E9',
@@ -280,6 +314,7 @@ const DashUI = () => {
           </p>
           <FaTimes style={{ cursor: 'pointer' }} />
         </div>
+
         <div 
           style={{
             display: 'flex', 
@@ -295,8 +330,30 @@ const DashUI = () => {
           {loading ? <p>Loading tasks...</p> : <TaskTable tasks={tasks} onStartTask={handleStartTask} />}
         </div>
       </div>
-    </>
-  );
+
+      {/* Add custom scrollbar CSS directly in the component */}
+      <style jsx>{`
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 6px; /* Thin scrollbar */
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: #f1f1f1; /* Light background for the track */
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: #d63384; /* Red/pinkish color for the scrollbar */
+          border-radius: 3px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: #a30b4d; /* Slightly darker on hover */
+        }
+      `}</style>
+    </div>
+  </>
+);
+
 };
 
 export default DashUI;

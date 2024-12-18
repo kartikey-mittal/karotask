@@ -92,10 +92,10 @@ const TaskTable = ({ tasks, onStartTask }) => {
         .table-container {
           width:100%;
           overflow-x: auto;
-          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-          margin-top: 20px;
+         
+          margin-top: 10px;
           padding: .5rem;
-          background: #fff;
+          background: #FFF;
           border-radius: 10px;
         }
         .task-table {
@@ -170,9 +170,9 @@ const TaskTable = ({ tasks, onStartTask }) => {
         /* Responsive styles */
 @media (max-width: 768px) {
   .table-container {
-    padding: 15px;
-     width:auto;/* Make container full-width on small screens */
-    margin: 0 auto; /* Center the container */
+    padding: 10px;
+     width:85%;/* Make container full-width on small screens */
+    margin: 0 0; /* Center the container */
   }
 
   .task-table {
@@ -186,10 +186,10 @@ const TaskTable = ({ tasks, onStartTask }) => {
   .task-row {
     display: flex;
     flex-direction: column;
-    padding: 12px;
+    padding: 10px;
     border: 1px solid #ddd;
     border-radius: 8px;
-    margin: 10px auto; /* Center each row and provide spacing between rows */
+    margin: 0px auto; /* Center each row and provide spacing between rows */
     max-width: 100%; /* Ensure rows span full width of the container */
     background-color: #fff;
   }
@@ -197,9 +197,10 @@ const TaskTable = ({ tasks, onStartTask }) => {
   .task-cell {
     display: flex;
     justify-content: space-between;
-    padding: 10px 0;
+    padding: 5px 0;
     width: 100%; /* Ensure full-width alignment of cells */
     font-size: 14px; /* Slightly smaller text for mobile */
+    // font-family:DMB
   }
 
   .task-cell span {

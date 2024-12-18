@@ -25,6 +25,7 @@ const Login = () => {
     email: "",
     phone: "",
     password: "",
+    businessName: "",
   });
   
   
@@ -113,7 +114,13 @@ const Login = () => {
       const user = userCredential.user;
       const userDoc = await getDoc(doc(db, activeTab === "user" ? "users" : "creators", user.uid));
       if (userDoc.exists()) {
+        
         if (user.emailVerified) {
+          if (activeTab === 'user') {
+            localStorage.setItem('User-UID', user.uid);
+          } else {
+            localStorage.setItem('Creator-UID', user.uid);
+          }
           navigate(`/${activeTab}/dashboard`);
         } else {
           setError("Please verify your email address.");
@@ -129,43 +136,64 @@ const Login = () => {
   };
 
   const handleSignup = async () => {
-    if (!validateForm()) return;
-    setLoading(true);
+    if (!validateForm()) return; // Validate the form before proceeding
+    setLoading(true); // Set loading state to true
     try {
+      // Create a new user with email and password
       const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
-      const user = userCredential.user;
+      const user = userCredential.user; // Get the user from the credential
+  
+      // Set user or creator document in Firestore based on active tab
       await setDoc(doc(db, activeTab === "user" ? "users" : "creators", user.uid), {
         name: formData.name,
         email: formData.email,
         phone: formData.phone,
         role: activeTab,
+        UID: user.uid,
         ...(activeTab === "user" && {
-            UID: user.uid,
-            age: 0,
-            completedTask: 0,
-            createdAt: new Date().toLocaleString("en-US", { timeZone: "UTC" }),
-            earnings: 0,
-            inProgressTask: 0,
-            kyc: "temp",
-            panCardUrl: "temp",
-            pendingTask: 0,
-            photoUrl: "temp"
-        })
-    });
-    
-    localStorage.setItem('User-UID', user.uid);
-      // Send verification email
+          wallet: 0,  // Wallet attribute for user
+          age: 0,
+          completedTask: 0,
+          createdAt: new Date().toLocaleString("en-US", { timeZone: "UTC" }),
+          earnings: 0,
+          inProgressTask: 0,
+          kyc: "temp",
+          panCardUrl: "temp",
+          pendingTask: 0,
+          photoUrl: "temp"
+        }),
+        ...(activeTab === "creator" && {
+          payments: [],  // Payments attribute for creator (empty array initially)
+          earnings: 0,
+          createdAt: new Date().toLocaleString("en-US", { timeZone: "UTC" }),
+          businessName: formData.businessName || '', // Add business name for creator if needed
+          
+        }),
+      });
+  
+      // Store user UID in localStorage based on the active tab
+      if (activeTab === "user") {
+        localStorage.setItem('User-UID', user.uid);
+      } else {
+        localStorage.setItem('Creator-UID', user.uid);
+      }
+  
+      // Send verification email to the user
       await sendEmailVerification(user);
-
+  
       // Display a success message
       setError("Signup successful! Please check your email for verification.");
-      setIsSignup(false); // You can optionally switch back to login mode
+      setIsSignup(false); // Optionally switch back to login mode
+  
     } catch (error) {
+      // Handle error and display the appropriate message
       setError(getFirebaseErrorMessage(error.code));
     } finally {
-      setLoading(false);
+      setLoading(false); // Set loading state to false after operation
     }
   };
+  
+  
 
   const handleDemoLogin = (role) => {
     const formattedRole = role.charAt(0).toUpperCase() + role.slice(1);
@@ -284,6 +312,17 @@ useEffect(() => {
               style={{ width: "100%", padding: "0.75rem", marginBottom: "1rem", border: "1px solid #d1d5db", borderRadius: "8px", fontSize: "16px",backgroundColor: "#f9fafb",transition: "border-color 0.3s" }}
             />
           )}
+          {activeTab === "creator" && isSignup && (
+    <input
+      type="text"
+      name="businessName"
+      placeholder="Business Name"
+      value={formData.businessName}
+      onChange={handleChange}
+      className="input-field"
+      style={{ width: "100%", padding: "0.75rem", marginBottom: "0.5rem", border: "1px solid #d1d5db", borderRadius: "8px", fontSize: "16px", backgroundColor: "#f9fafb", transition: "border-color 0.3s" }}
+    />
+  )}
           <input
             type="email"
             name="email"
@@ -353,7 +392,7 @@ useEffect(() => {
             {loading ? "Loading..." : isSignup ? "Sign Up" : "Sign In"}
           </button>
 
-          <button
+          {/* <button
             onClick={() => handleDemoLogin(activeTab)}
             style={{
               marginTop: "1rem",
@@ -368,7 +407,7 @@ useEffect(() => {
             }}
           >
             Demo Login
-          </button>
+          </button> */}
           <p
         className="signup-switch"
         onClick={() => setIsSignup((prev) => !prev)}

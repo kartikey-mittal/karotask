@@ -1,5 +1,5 @@
 import React, { useState ,useEffect} from "react";
-import CreatorTopLayer from "../components/CreatorTopLayer";
+import AdminTopLayer from "../components/AdminTopLayer";
 import { FaTasks } from "react-icons/fa";
 import { useLocation } from 'react-router-dom';
 import { doc, updateDoc, Timestamp } from "firebase/firestore";
@@ -10,7 +10,7 @@ import ContentEditable from "react-contenteditable";
 import ReactQuill from "react-quill"; // Import ReactQuill
 import "react-quill/dist/quill.snow.css"; // Import Quill styles
 import { useParams } from 'react-router-dom';
-import TaskSubmission from "../components/TaskSubmission";
+
 
 
 
@@ -54,6 +54,7 @@ const TaskForm = ({ data, taskId }) => {
         dueDate: Timestamp.fromDate(new Date(dueDate)),
         maxSubmission: maxSubmissions,
         category: tags,
+        status:'ongoing'
       });
       alert("Task updated successfully!");
     } catch (error) {
@@ -231,7 +232,7 @@ const TaskForm = ({ data, taskId }) => {
         style={styles.submitButton}
         disabled={loading}
       >
-        {loading ? "Updating..." : "Submit"}
+        {loading ? "Updating..." : "Approve"}
       </button>
     </div>
   );
@@ -241,7 +242,7 @@ const TaskForm = ({ data, taskId }) => {
 
 
 
-const CreatorTaskDetails = () => {
+const AdminTaskDetails = () => {
   const location = useLocation();
   const taskData = location.state; 
   const { taskId } = useParams(); // URL se 'id' ko extract karega
@@ -253,7 +254,7 @@ const CreatorTaskDetails = () => {
     <div style={{ height: "100vh", overflow: "hidden" }}>
       {/* Top Layer */}
       <div style={{ position: "fixed", top: 0, width: "100%", zIndex: 10 }}>
-        <CreatorTopLayer name="Task Details" icon={FaTasks} />
+        <AdminTopLayer name="Task Details" icon={FaTasks} />
         {/* Tabs */}
         <div
           className="tabs"
@@ -296,7 +297,8 @@ const CreatorTaskDetails = () => {
           </div>
         ) : (
           <div>
-          <TaskSubmission data={taskData} taskId={taskData.id}/>
+          {/* <TaskSubmission data={taskData} taskId={taskData.id}/> */}
+          <div>Able to see submissions from users</div>
         </div>
         )}
       </div>
@@ -305,4 +307,4 @@ const CreatorTaskDetails = () => {
 };
 
 
-export default CreatorTaskDetails;
+export default AdminTaskDetails;

@@ -9,6 +9,7 @@ import { NavLink } from 'react-router-dom';
 const CreatorTask = () => {
   const [tasks, setTasks] = useState({ 'All Tasks': [], 'Ongoing Tasks': [] });
   const [activeTab, setActiveTab] = useState('All Tasks');
+  const UID = localStorage.getItem('Creator-UID');
 
 
 
@@ -16,7 +17,7 @@ const CreatorTask = () => {
     const fetchTasks = async () => {
       try {
         const tasksCollection = collection(db, 'tasks');
-        const tasksQuery = query(tasksCollection, where('creatorID', '==', 'SRM'));
+        const tasksQuery = query(tasksCollection, where('creatorID', '==', UID));
         const querySnapshot = await getDocs(tasksQuery);
 
         const allTasks = querySnapshot.docs.map((doc) => {
@@ -145,17 +146,17 @@ const CreatorTask = () => {
             onClick={() => setActiveTab(tab)}
             style={{
 
-              backgroundColor: '#d9418d',
-              color: '#FFF',
-              padding: '10px 10px',
+              backgroundColor: '#f7f9fb',
+              // color: '#FFF',
+           
               border: 'none',
-              borderRadius: '10px',
+              borderRadius: '0px',
 
               padding: '10px 20px',
 
               cursor: 'pointer',
               fontWeight: activeTab === tab ? 'bold' : 'normal',
-              color: activeTab === tab ? '#ff4081' : '#858585',
+              color: activeTab === tab ? '#000' : '#858585',
               borderBottom: activeTab === tab ? '2px solid #ff4081' : 'none',
             }}
           >
@@ -174,9 +175,24 @@ const CreatorTask = () => {
           padding: '10px',overflowX: 'hidden'
         }}
       >
-        {tasks[activeTab]?.map((task) => (
-          <CreatorTaskCard key={task.id} {...task} />
-        ))}
+         {tasks[activeTab]?.length > 0 ? (
+    tasks[activeTab].map((task) => (
+      <CreatorTaskCard key={task.id} {...task} />
+      
+    ))
+  ) : (
+    <div
+      style={{
+        textAlign: 'center',
+        color: '#858585',
+        fontSize: '1.5rem',
+        padding: '20px',
+        fontFamily: 'DMB',
+      }}
+    >
+      No <span style={{color:'#cf1270',fontFamily:"DMB"}}>{activeTab}</span> tasks available
+    </div>
+  )}
       </div>
     </div>
   </div>

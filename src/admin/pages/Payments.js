@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { FaMoneyCheckAlt } from 'react-icons/fa';
-import UserTopLayer from '../components/UserTopLayer';
-import PayoutHistoryTable from '../components/PayoutHistoryTable';
+
+// import PayoutHistoryTable from '../components/PayoutHistoryTable';
+import AdminTopLayer from '../components/AdminTopLayer';
 
 const TopLayer = () => {
-  return <UserTopLayer name="Earnings" icon={FaMoneyCheckAlt} />;
+  return <AdminTopLayer name="Earnings" icon={FaMoneyCheckAlt} />;
 };
 
 const MyEarnings = ({ onRequestPayout }) => {
@@ -71,9 +72,9 @@ const MyEarnings = ({ onRequestPayout }) => {
   );
 };
 
-const PayoutHistory = () => {
-  return <PayoutHistoryTable />;
-};
+// const PayoutHistory = () => {
+//   return <PayoutHistoryTable />;
+// };
 
 const Modal = ({ onClose, onSubmit }) => {
   const [upiId, setUpiId] = useState('');
@@ -153,44 +154,13 @@ const Modal = ({ onClose, onSubmit }) => {
   );
 };
 
-const EarningsPage = () => {
+const Payments = () => {
   const [selectedTab, setSelectedTab] = useState('myEarnings');
   const [isModalVisible, setModalVisible] = useState(false);
 
   return (
-    <div 
-    style={{
-      display: 'flex',
-      flexDirection: 'column',
-      height: '100vh',
-      overflow: 'hidden',
-    }}
-  >
-    {/* Fixed Top Layer */}
-    <div 
-        style={{
-          position: 'sticky',
-          top: 0,
-          zIndex: 100,
-          width: '100%',
-        }}
-      >
+    <div>
       <TopLayer />
-      </div>
-      {/* Scrollable Content */}
-      <div 
-        style={{
-          flexGrow: 1,
-          overflowY: 'auto',
-          padding: '20px',
-          fontFamily: 'DMM, sans-serif',
-          // Custom Scrollbar Styles
-          scrollbarWidth: 'thin',
-          scrollbarColor: '#d63384 #f1f1f1',
-        }}
-        // WebKit (Chrome, Safari, newer versions of Opera) scrollbar styling
-        className="custom-scrollbar"
-      >
       <div style={{ display: 'flex', borderBottom: '2px solid #ddd' }}>
         <div
           onClick={() => setSelectedTab('myEarnings')}
@@ -219,7 +189,7 @@ const EarningsPage = () => {
       </div>
       <div>
         {selectedTab === 'myEarnings' && <MyEarnings onRequestPayout={() => setModalVisible(true)} />}
-        {selectedTab === 'payoutHistory' && <PayoutHistory />}
+        {/* {selectedTab === 'payoutHistory' && <PayoutHistory />} */}
       </div>
       {isModalVisible && (
         <Modal
@@ -228,8 +198,7 @@ const EarningsPage = () => {
         />
       )}
     </div>
-    </div>
   );
 };
 
-export default EarningsPage;
+export default Payments;

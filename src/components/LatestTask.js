@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { FaExclamationCircle } from 'react-icons/fa';
 const LatestTask = ({ tasks, role }) => {
   return (
     <div style={{
@@ -32,6 +32,15 @@ const LatestTask = ({ tasks, role }) => {
             <th style={{ padding: '10px' }}>{role === 'user' ? 'Action' : 'Status'}</th>
           </tr>
         </thead>
+        {
+  tasks && tasks.length === 0 ? (
+    <div style={{ textAlign: 'center', padding: '0px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+    <span style={{ marginRight: '10px', fontSize: '24px', color: 'red' }}>
+      <FaExclamationCircle />
+    </span>
+    <h3 style={{ color: 'red', fontFamily: 'DMB' }}> NO TASKS CREATED</h3>
+  </div>
+  ) : (
         <tbody>
           {tasks.map((task, index) => (
             <tr key={index} style={{
@@ -56,7 +65,7 @@ const LatestTask = ({ tasks, role }) => {
                     padding: '3px 3px',
                     borderRadius: '5px',
                     color: '#FFF',
-                    backgroundColor: task.status === 'ongoing' ? '#ffa500' : task.status === 'completed' ? '#28a745' : '#6c757d',
+                    backgroundColor: task.status === 'ongoing' ? '#ffa500' : task.status === 'completed' ? '#28a745' : '#cd6e21',
                     fontFamily: 'DMM',fontSize:'0.7rem'
                   }}>
                     {task.status}
@@ -66,6 +75,8 @@ const LatestTask = ({ tasks, role }) => {
             </tr>
           ))}
         </tbody>
+         )
+}
       </table>
     </div>
   );

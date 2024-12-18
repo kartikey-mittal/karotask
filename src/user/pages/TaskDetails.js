@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { doc, getDoc, collection, query, where, getDocs, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase"; 
 import "./TaskDetails.css";
-import TaskTopLayer from "../components/UserTopLayer";
+import UserTopLayer from '../components/UserTopLayer';
 import {
   FaLock,
   FaQuestionCircle,
@@ -101,11 +101,19 @@ const TaskDetails = () => {
   const handleSubmitTask = async () => {
     try {
       const participantDocRef = doc(db, "tasks", id, "participants", UID);
-      await updateDoc(participantDocRef, { status: "completed" });
+      
+      // Update the `status` field to 'completed'
+      await updateDoc(participantDocRef, {
+        status: "need-approval",
+      });
 
       const userDocRef = doc(db, "users", UID, "task", id);
-      await updateDoc(userDocRef, { status: "completed" });
-
+      
+      // Update the `status` field to 'completed'
+      await updateDoc(userDocRef, {
+        status: "need-approval",
+      });
+  
       alert("Task status updated successfully!");
       setTaskStatus("completed");
     } catch (error) {
@@ -123,15 +131,28 @@ const TaskDetails = () => {
 
   return (
     <>
-      <div className="container">
-      <TaskTopLayer />
-        <div className="main-container">
-          <div className="about-task">
+      <div className="">
+      <div style={{ position: 'fixed',width: '100%', zIndex: 0 }}>
+      <UserTopLayer name="Tasks" icon={FaTasks} />
+    </div>
+       <div
+      style={{
+        marginTop: '0px', // Adjust this based on the height of TopLayer
+        height: 'calc(100vh - 60px)', // Adjust height dynamically
+        overflowY: 'auto',
+        padding: '15px',
+        fontFamily: 'DMM, sans-serif',
+      }}
+       >
+        <div className="main-container" style={{}}>
+          <div className="about-task" style={{width:"80%",}}>
          
-            <div className="bottom" style={{padding:isMobile ? '0px' : '10px'}}>
-              <div className="status-bar" style={{ flexDirection: isMobile ? 'column' : 'column', }}>
-                <div className="task-title">{taskDetails.name}</div>
-                <div className="task-details" style={{ flexDirection: isMobile ? 'row' : 'row', }}>
+          <div className="bottom">
+              <div className="status-bar">
+                <h2 className="task-title" style={{fontFamily:'DMB'}}>
+              {taskDetails.name}
+                </h2>
+                <div className="task-details">
                   <div className="task-item">
                     <div className="task-label">Status</div>
                     <div className="status-badge in-progress">{taskStatus}</div>
@@ -148,13 +169,17 @@ const TaskDetails = () => {
                   </div>
                 </div>
               </div>
-              <div className="task-details-bottom">
-                <h2>Tasks Overview</h2>
-                <span 
-                  dangerouslySetInnerHTML={{
-                    __html: DOMPurify.sanitize(taskDetails.overview)
-                  }} 
-                />
+              <div class="task-details-bottom">
+                <h2 className="task-title" style={{color:"#757575",fontFamily:'DMM',fontSize:"1rem"}}>Tasks Overview</h2>
+            
+      
+                      <span style={{fontFamily:'DMM'}}
+                        dangerouslySetInnerHTML={{
+                          __html: DOMPurify.sanitize(taskDetails.overview)
+                        }} 
+                      />
+                  
+                
                 <p>
                   <strong>Note:</strong> Do not delete the post from the group
                   as we can re-verify the forwarded post.
@@ -167,57 +192,84 @@ const TaskDetails = () => {
               </div>
             </div>
           </div>
-
-          
-          {!isMobile && (
-            <div className="about-client"  style={{width:'100%'}}>
-              <h2>About Client</h2>
-              <div className="client-header">
-                <div className="client-image">
-                  <img
-                    src="https://via.placeholder.com/60x60"
-                    alt="Client Profile"
-                    className="profile-pic"
-                  />
-                </div>
-                <h3 className="client-name">Justin Durby</h3>
-                <div className="client-rating">
-                  <span className="star">★</span>
-                  <span className="star">★</span>
-                  <span className="star">★</span>
-                  <span className="star">★</span>
-                  <span className="star-empty">☆</span>
-                </div>
-                <div className="identity-status">Identity Verified</div>
+          <div className="bottom" style={{}}>
+          <div class="about-client" >
+            <h2>About Client</h2>
+            <div class="client-header">
+              <div class="client-image">
+                <img
+                  src="https://via.placeholder.com/60x60"
+                  alt="Client Profile"
+                  class="profile-pic"
+                />
               </div>
-              <div className="client-stats">
-                <div className="stat-item">
-                  <span>Total Spend</span>
-                  <span className="stat-value">₹142000</span>
-                </div>
-                <div className="divider"></div>
-                <div className="stat-item">
-                  <span>Tasks</span>
-                  <span className="stat-value">14</span>
-                </div>
-              </div>
-              <h4>Other Tasks Of This Client</h4>
-            <ul className="other-tasks">
-              {otherTasks.map((task, index) => (
-                <li key={index} className="task-item">
-                  <img
-                    src={task.icon}
-                    alt="Task Icon"
-                    className="task-icon"
-                  />
-                  {task.name}
-                  <span className="task-time">{task.time}</span>
-                </li>
-              ))}
-            </ul>
+              <h3 class="client-name">Justin Durby</h3>
+           
+              <span class="identity-status" style={{color:"#fff",fontFamily:'DMB',backgroundColor:"#238b41",paddingInline:"10px",borderRadius:'10px'}}> Verified</span>
             </div>
-          )}
+            <div class="client-stats">
+              <div class="stat-item">
+                <span>Total Spend</span>
+                <span class="stat-value">₹142000</span>
+              </div>
+              <div class="divider"></div>
+              <div class="stat-item">
+                <span>Tasks</span>
+                <span class="stat-value">14</span>
+              </div>
+            </div>
+            <h4>Other Tasks Of This Client</h4>
+            <ul class="other-tasks">
+              <li class="task-item">
+                <img
+                  src="https://via.placeholder.com/30"
+                  alt="Task Icon"
+                  class="task-icon"
+                />
+                Post a Tweet on Twitter
+                <span class="task-time">164 days ago</span>
+              </li>
+              <li class="task-item">
+                <img
+                  src="https://via.placeholder.com/30"
+                  alt="Task Icon"
+                  class="task-icon"
+                />
+                Upload Reel on Your Instagram
+                <span class="task-time">148 days ago</span>
+              </li>
+              <li class="task-item">
+                <img
+                  src="https://via.placeholder.com/30"
+                  alt="Task Icon"
+                  class="task-icon"
+                />
+                [Featured] Upload Reel on Your Instagram with HashTags
+                <span class="task-time">132 days ago</span>
+              </li>
+              <li class="task-item">
+                <img
+                  src="https://via.placeholder.com/30"
+                  alt="Task Icon"
+                  class="task-icon"
+                />
+                [IG reel] Upload Hindi Reel in Your Instagram Account
+                <span class="task-time">132 days ago</span>
+              </li>
+              <li class="task-item">
+                <img
+                  src="https://via.placeholder.com/30"
+                  alt="Task Icon"
+                  class="task-icon"
+                />
+                [IG reel] Upload Hindi Reel in Your Instagram Account
+                <span class="task-time">132 days ago</span>
+              </li>
+            </ul>
+          </div>
+          </div>
         </div>
+      </div>
       </div>
     </>
   );
