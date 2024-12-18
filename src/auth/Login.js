@@ -12,6 +12,12 @@ import loginImage from "../assets/2.png";
 
 const Login = () => {
   const navigate = useNavigate();
+  useEffect(() => {
+    // Check if user is already logged in
+    if (auth.currentUser) {
+      navigate(`/${activeTab}/dashboard`, { replace: true }); 
+    }
+  }, [navigate]);
   const [activeTab, setActiveTab] = useState("user");
   const [isSignup, setIsSignup] = useState(false);
   const [formData, setFormData] = useState({
