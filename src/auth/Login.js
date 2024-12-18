@@ -434,18 +434,35 @@ useEffect(() => {
   )}
       </p>
 
-      <p
-        className="reset-password-switch"
-        onClick={() => setShowResetPassword(true)} // Show the password reset modal
-        style={{
-          marginTop: ".05rem",
-          color: "#3b82f6",
-          cursor: "pointer",
-          fontSize: "14px",
-        }}
-      >
-        {"Forgot password ?"}
-      </p>
+<p
+  className="reset-password-switch"
+  onClick={() => setShowResetPassword(true)} // Show the password reset modal
+  style={{
+    marginTop: ".05rem",
+    color: "#3b82f6",
+    cursor: "pointer",
+    fontSize: "14px",
+  }}
+>
+  {"Forgot password ?"}
+</p>
+
+<button
+  onClick={() => navigate('/admin/login')}
+  style={{
+    marginTop: "1rem",
+    padding: "0.75rem",
+    backgroundColor: "#3b82f6",
+    color: "#ffffff",
+    border: "none",
+    borderRadius: "5px",
+    fontSize: "16px",
+    cursor: "pointer",
+    fontFamily: "DMB, Arial, sans-serif",
+  }}
+>
+  Admin Portal
+</button>
 
       {/* Password Reset Modal */}
       {showResetPassword && (
