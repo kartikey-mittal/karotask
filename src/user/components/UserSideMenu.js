@@ -42,13 +42,13 @@ const UserSideMenu = ({ children }) => {
       {/* Sidebar */}
       <div
         style={{
-          width: sidebarOpen || !isMobile ? "180px" : "60px", // Adjust width based on state
+          width: sidebarOpen || !isMobile ? "200px" : "60px", // Adjust width based on state	
           borderRight: "1px solid #ddd",
           backgroundColor: "#f4f4f4",
           // transition: "width 0.3s ease",
           position: "fixed", // Sidebar remains fixed
           height: "100vh",
-          zIndex: 999,padding:'10px'
+          zIndex: 999,
         }}
       >
         {/* Logo */}

@@ -110,6 +110,7 @@ const DashUI = () => {
   const [screenWidth, setScreenWidth] = useState(window.innerWidth); 
 
   const UID = localStorage.getItem('User-UID'); // Replace with dynamic UID
+ 
 
   useEffect(() => {
     const handleResize = () => setScreenWidth(window.innerWidth);
@@ -245,18 +246,48 @@ const DashUI = () => {
 
   return (
   <>
-    {/* Fixed Top Layer */}
-    <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', zIndex: 10, backgroundColor: '#fff' }}>
-      <TopLayer />
-      <div style={{ fontFamily: 'DMM, sans-serif', padding: '20px' }}>
+    <div 
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100vh',
+        overflow: 'hidden',
+      }}
+    >
+      {/* Fixed Top Layer */}
+      <div 
+        style={{
+          position: 'sticky',
+          top: 0,
+          zIndex: 100,
+          width: '100%',
+        }}
+      >
+        <UserTopLayer name="Dashboard" icon={FaTasks} />
+      </div>
+
+      {/* Scrollable Content */}
+      <div 
+        style={{
+          flexGrow: 1,
+          overflowY: 'auto',
+          padding: '20px',
+          fontFamily: 'DMM, sans-serif',
+          // Custom Scrollbar Styles
+          scrollbarWidth: 'thin',
+          scrollbarColor: '#d63384 #f1f1f1',
+        }}
+        // WebKit (Chrome, Safari, newer versions of Opera) scrollbar styling
+        className="custom-scrollbar"
+      >
         <div 
           style={{
             display: 'flex', 
             flexDirection: isMobile ? 'column' : 'row', 
             justifyContent: 'space-between', 
             marginBottom: '20px',
-           flexWrap: isMobile ? 'nowrap' : 'wrap',
-    overflowX: 'hidden'
+            flexWrap: isMobile ? 'wrap' : 'wrap',
+            overflowX: 'hidden'
           }}
         >
           <StatBox icon={<FaTasks size="2em" />} title="Total Tasks" value={totalTasks} color="#edf0ff" />
@@ -264,6 +295,7 @@ const DashUI = () => {
           <StatBox icon={<FaRegClock size="2em" />} title="Pending Approval" value={pendingApprovalTasks} color="#fcd4c8" />
           <StatBox icon={<FaRupeeSign size="2em" />} title="My Earnings" value="₹15,000" color="#fff3d4" />
         </div>
+
         <div 
           style={{
             backgroundColor: '#E8F5E9',
@@ -282,6 +314,7 @@ const DashUI = () => {
           </p>
           <FaTimes style={{ cursor: 'pointer' }} />
         </div>
+
         <div 
           style={{
             display: 'flex', 
@@ -298,31 +331,25 @@ const DashUI = () => {
         </div>
       </div>
 
-      <div
-        style={{
-          backgroundColor: '#E8F5E9',
-          padding: '10px',
-          borderRadius: '10px',
-          marginBottom: '20px',
-          display: 'flex',
-          alignItems: 'center',
-        }}
-      >
-        <FaBell style={{ marginRight: '10px', color: '#a30b4d' }} />
-        <p style={{ margin: '0', flexGrow: '1' }}>
-          You need to update your KYC, profile, social media links, and UPI; only then you'll be able to make withdraw requests.
-        </p>
-        <FaTimes style={{ cursor: 'pointer' }} />
-      </div>
+      {/* Add custom scrollbar CSS directly in the component */}
+      <style jsx>{`
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 6px; /* Thin scrollbar */
+        }
 
-      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <TaskStatus 
-          completed={pendingApprovalTasks} 
-          inProgress={ongoingTasks} 
-          pendingApproval={0} 
-        />
-        {loading ? <p>Loading tasks...</p> : <TaskTable tasks={tasks.slice(0, 5)} onStartTask={handleStartTask} />}
-      </div>
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: #f1f1f1; /* Light background for the track */
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: #d63384; /* Red/pinkish color for the scrollbar */
+          border-radius: 3px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: #a30b4d; /* Slightly darker on hover */
+        }
+      `}</style>
     </div>
   </>
 );
