@@ -16,7 +16,7 @@ const CreatorDashboard = () => {
       <Route path="task" element={<CreatorTask />} />
       <Route path="task/create-task" element={<CreateNewTask />} />
       <Route path="task/task-info/:id" element={<CreatorTaskDetails />} />
-      <Route path="earning" element={<CreatorDashUI />} />
+
       <Route path="faq" element={<CreatorFAQ />} />
      
 

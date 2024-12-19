@@ -3,14 +3,14 @@ import StatsBox from '../../components/StatsBox';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { FaTasks, FaSpinner, FaRegClock, FaRupeeSign, FaBan, FaBell, FaTimes, FaTachometerAlt } from 'react-icons/fa';
-import Loading from "../../components/Loading";
-
+// import Loading from "../../components/Loading";
 import CreatorTopLayer from '../components/CreatorTopLayer';
 import LatestTask from '../../components/LatestTask';
 import TaskStatus from '../../components/TaskStatus';
 
 const CreatorDashUI = () => {
   const UID = localStorage.getItem('Creator-UID');
+    const [screenWidth, setScreenWidth] = useState(window.innerWidth); 
   const [loading, setLoading] = useState(true); // New loading state
   const [creatorOngoingTasks, setCreatorOngoingTasks] = useState([]);
   const [creatorCompletedTasks, setCreatorCompletedTasks] = useState([]);
@@ -33,6 +33,14 @@ const CreatorDashUI = () => {
     return taskDueDate >= currentDate;
   };
 
+  useEffect(() => {
+      const handleResize = () => setScreenWidth(window.innerWidth);
+  
+      window.addEventListener('resize', handleResize);
+  
+      return () => window.removeEventListener('resize', handleResize);
+    }, []);
+    const isMobile = screenWidth <= 768;
   useEffect(() => {
     const fetchTasks = async () => {
       setLoading(true);
@@ -103,9 +111,9 @@ const CreatorDashUI = () => {
     fetchTasks();
   }, []);
 
-  if (loading) {
-    return <Loading />; // Show loading component
-  }
+  // if (loading) {
+  //   return <Loading />; // Show loading component
+  // }
   const TopLayer = () => {
     return <CreatorTopLayer name="Dashboard" icon={FaTasks} />;
   };
@@ -145,26 +153,63 @@ const CreatorDashUI = () => {
 
   return (
     <>
-      <CreatorTopLayer name="Creator Dashboard" icon={FaTachometerAlt} />
-      <div style={{ fontFamily: 'DMM, sans-serif', padding: '20px' }}>
-        <div
+     <div 
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100vh',
+        overflow: 'hidden',
+      }}
+    >
+        {/* Fixed Top Layer */}
+        <div 
+        style={{
+          position: 'sticky',
+          top: 0,
+          zIndex: 100,
+          width: '100%',
+        }}
+      >
+      <CreatorTopLayer name="Creator Dashboard" icon={FaTachometerAlt} /></div>
+      <div 
+        style={{
+          flexGrow: 1,
+          overflowY: 'auto',
+          padding: '20px',
+          fontFamily: 'DMM, sans-serif',
+          // Custom Scrollbar Styles
+          scrollbarWidth: 'thin',
+          scrollbarColor: '#d63384 #f1f1f1',
+        }}
+        // WebKit (Chrome, Safari, newer versions of Opera) scrollbar styling
+        className="custom-scrollbar"
+      >
+        <div 
           style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            justifyContent: 'space-between',
+            display: 'flex', 
+            flexDirection: isMobile ? 'column' : 'row', 
+            justifyContent: 'space-between', 
             marginBottom: '20px',
+            flexWrap: isMobile ? 'nowrap' : 'wrap',
+            overflowX: 'hidden'
           }}
         >
           {stats.map((stat, index) => (
             <StatsBox key={index} icon={stat.icon} title={stat.title} value={stat.value} color={stat.color} />
           ))}
         </div>
-        <div style={{ backgroundColor: '#E8F5E9', padding: '10px', borderRadius: '10px', marginBottom: '20px', display: 'flex', alignItems: 'center' }}>
+        <div style={{ backgroundColor: '#E8F5E9', padding: '10px', borderRadius: '10px', marginBottom: '20px', display: 'flex', alignItems: 'center' ,textAlign: isMobile ? 'center' : 'left',}}>
           <FaBell style={{ marginRight: '10px', color: '#a30b4d' }} />
           <p style={{ margin: '0', flexGrow: '1' }}>You're a Creator</p>
           <FaTimes style={{ cursor: 'pointer' }} />
         </div>
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <div 
+          style={{
+            display: 'flex', 
+            flexDirection: isMobile ? 'column' : 'row', 
+            justifyContent: isMobile ? 'center' : 'space-between',
+          }}
+        >
           <TaskStatus 
             completed={creatorCompletedTasks.length} 
             inProgress={creatorOngoingTasks.length} 
@@ -176,6 +221,7 @@ const CreatorDashUI = () => {
     <LatestTask tasks={latestTasks} role="creator" />
   
         </div>
+      </div>
       </div>
     </>
   );

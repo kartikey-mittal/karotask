@@ -24,7 +24,7 @@ const FAQSection = ({ title, questions, headingColor }) => {
   };
 
   return (
-    <div style={{ marginBottom: '30px' }}>
+    <div style={{ marginBottom: '10px', }}>
       {/* Section Title with dynamic color */}
       <h2 style={{ marginBottom: '20px', color: headingColor }}>{title}</h2>
       {questions.map((question, index) => (
@@ -112,12 +112,43 @@ const CreatorFAQ = () => {
   ];
 
   return (
-    <div style={{ height: '100%', width: '100%', }}>
+    <div 
+    style={{
+      display: 'flex',
+      flexDirection: 'column',
+      height: '100vh',
+      overflow: 'hidden',
+    }}
+  >
+     {/* Fixed Top Layer */}
+     <div 
+        style={{
+          position: 'sticky',
+          top: 0,
+          zIndex: 100,
+          width: '100%',
+        }}
+      >
       <TopLayer />
-      <div style={{ display: 'flex', height: '100vh' }}>
+      </div>
+
+     {/* Scrollable Content */}
+      <div 
+        style={{
+          flexGrow: 1,
+          overflowY: 'auto',
+          padding: '20px',
+          fontFamily: 'DMM, sans-serif',
+          // Custom Scrollbar Styles
+          scrollbarWidth: 'thin',
+          scrollbarColor: '#d63384 #f1f1f1',overflowX:'hidden'
+        }}
+        // WebKit (Chrome, Safari, newer versions of Opera) scrollbar styling
+        className="custom-scrollbar"
+      >
         <div
           style={{
-            padding: '20px',
+            padding: '10px',
             height: '100%',
             width: '100%',
             overflowY: 'scroll',

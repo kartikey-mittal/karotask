@@ -299,7 +299,7 @@ const DashUI = () => {
         <div 
           style={{
             backgroundColor: '#E8F5E9',
-            padding: '10px',
+            padding: '5px',
             borderRadius: '10px',
             marginBottom: '20px',
             display: 'flex',
@@ -308,11 +308,11 @@ const DashUI = () => {
             textAlign: isMobile ? 'center' : 'left',
           }}
         >
-          <FaBell style={{ marginRight: '10px', color: '#a30b4d' }} />
-          <p style={{ margin: '0', flexGrow: '1' }}>
+          <FaBell style={{ marginRight: '10px', color: '#a30b4d' ,fontSize: isMobile?'0.8rem':'1rem'  }} />
+          <p style={{ margin: '0', flexGrow: '1', fontSize: isMobile?'0.5rem':'1rem' }}>
             You need to update your KYC, profile, social media links, and UPI; only then you'll be able to make withdraw requests.
           </p>
-          <FaTimes style={{ cursor: 'pointer' }} />
+          <FaTimes style={{ cursor: 'pointer',display:isMobile?'none':'block' }} />
         </div>
 
         <div 

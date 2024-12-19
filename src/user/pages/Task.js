@@ -202,11 +202,11 @@ const Task = () => {
       </div>
       <style jsx>{`
         .task-container {
-          padding: 20px;
+          padding: 10px;
           font-family: "DMM,;
           background: #f8f9fa;
           border-radius: 8px;
-          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          // box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         .tabs {
           display: flex;
@@ -236,7 +236,8 @@ const Task = () => {
           padding: ;
           background: #fff;
           border-radius: 8px;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          border-color:#000;
+          // box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         .empty-state {
           text-align: center;

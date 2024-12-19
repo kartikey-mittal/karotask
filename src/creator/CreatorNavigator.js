@@ -10,16 +10,14 @@ const CreatorNavigator = () => {
       {/* Sidebar */}
     <div
         style={{
-          backgroundColor: "#f4f4f4", // Sidebar background
-          overflow: "hidden", // Prevents sidebar content overflow
-          boxShadow: "2px 0 5px rgba(0,0,0,0.1)", // Optional shadow for styling
+          
         }}
       >
         <CreatorSideMenu />
       </div>
 
       {/* Content Area */}
-      <div style={{ flex: 1, padding: "0px", backgroundColor: "#fff" }}>
+      <div style={{ flex: 1, padding: "0px", backgroundColor: "#fff" ,}}>
         <Routes>
           <Route path="dashboard/*" element={<CreatorDashboard />} />
           {/* <Route path="account" element={<UserAccount />} /> */}
