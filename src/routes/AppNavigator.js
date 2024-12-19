@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Login from "../auth/Login";
+import AdminLogin from "../auth/AdminLogin"; // Import the AdminLogin component
 import ProtectedRoute from "./ProtectedRoute";
 import UserNavigator from "../user/UserNavigator";
 import CreatorNavigator from "../creator/CreatorNavigator";
@@ -11,7 +12,8 @@ const AppNavigator = () => {
     <Router>
       <Routes>
       <Route path="/" element={<Navigate to="/login" />} />
-        <Route path="/login" element={<Login />} />
+<Route path="/admin/login" element={<AdminLogin />} /> // Route for Admin Login
+<Route path="/login" element={<Login />} />
         <Route
           path="/user/*"
           element={
