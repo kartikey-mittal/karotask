@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { FaUserCircle, FaRegEnvelope, FaPhoneAlt, FaEdit } from "react-icons/fa";
-import { getFirestore, doc, getDoc, collection, getDocs } from "firebase/firestore";
+import { getFirestore, doc, getDoc, collection, getDocs,updateDoc,increment } from "firebase/firestore";
 import Loading from "../../components/Loading";
-const Popup = ({ onClose, user }) => {
+const Popup = ({ onClose, user, taskId, onApprove }) => {
   if (!user) return null;
 
   return (
@@ -51,7 +51,7 @@ const Popup = ({ onClose, user }) => {
           <strong>Email:</strong> {user.email}
         </p>
         <button
-          onClick={onClose}
+          onClick={() => onApprove(user)}
           style={{
             marginTop: "20px",
             backgroundColor: "#1890ff",
@@ -60,9 +60,10 @@ const Popup = ({ onClose, user }) => {
             border: "none",
             borderRadius: "4px",
             cursor: "pointer",
+            fontFamily: "DMM",
           }}
         >
-          Okay, Done
+          Approve this task
         </button>
       </div>
     </div>
@@ -241,6 +242,7 @@ const TaskSubmission = ({ taskId }) => {
 
             fetchedParticipants.push({
               name: userData.name,
+              UID: userData.UID,
               email: userData.email,
               phone: userData.phone,
               status,submittedDate
@@ -259,6 +261,54 @@ console.log(fetchedParticipants);
     fetchData();
   }, [taskId]);
 
+  const handleApprove = async (user) => {
+    const db = getFirestore();
+    try {
+      // Step 1: Fetch the price attribute from the tasks collection
+      const taskDocRef = doc(db, "tasks", taskId);
+      const taskDocSnap = await getDoc(taskDocRef);
+      if (!taskDocSnap.exists()) {
+        alert("Task not found.");
+        return;
+      }
+      const { price } = taskDocSnap.data();
+  
+      // Step 2: Update status in user's task subcollection
+      const userTaskDocRef = doc(db, "users", user.UID, "task", taskId);
+      await updateDoc(userTaskDocRef, { status: "completed" });
+  
+      // Step 3: Update status in task's participant subcollection
+      const taskParticipantDocRef = doc(db, "tasks", taskId, "participants", user.UID);
+      await updateDoc(taskParticipantDocRef, { status: "completed" });
+  
+      // Step 4: Update netEarning and availableMoney in the user's document
+      const userDocRef = doc(db, "users", user.UID);
+      await updateDoc(userDocRef, {
+        netEarning: increment(price),
+        availableMoney: increment(price),
+      });
+  
+      // Step 5: Alert success, close popup, and reload data
+      alert("Task approved successfully.");
+      closePopup(); // Function to close the popup (implement this)
+      reloadData(); // Function to reload data (implement this)
+      setSelectedUser(null)
+    } catch (error) {
+      console.error("Error approving task:", error);
+      alert("Failed to approve the task.");
+    }
+  };
+  
+  const closePopup = () => {
+    // Logic to close the popup/modal
+    console.log("Popup closed.");
+  };
+  
+  const reloadData = () => {
+    // Logic to reload data or refresh UI
+    console.log("Data reloaded.");
+  };
+  
   if (loading) {
     return <Loading />; // Show loading component
   }
@@ -279,7 +329,7 @@ console.log(fetchedParticipants);
       {participants.map((participant, index) => (
        <TaskCard
        key={index}
-       name={participant.name}
+       name={participant.UID}
        email={participant.email}
        phone={participant.phone}
        status={participant.status}
@@ -289,10 +339,12 @@ console.log(fetchedParticipants);
      
       ))}
       {selectedUser && (
-        <Popup
-          user={selectedUser}
-          onClose={() => setSelectedUser(null)}
-        />
+       <Popup
+       user={selectedUser}
+       taskId={taskId}
+       onClose={() => setSelectedUser(null)}
+       onApprove={handleApprove}
+     />
       )}
     </div>
   );

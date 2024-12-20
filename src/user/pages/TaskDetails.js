@@ -100,34 +100,63 @@ const TaskDetails = () => {
 
   const handleSubmitTask = async () => {
     try {
-      const participantDocRef = doc(db, "tasks", id, "participants", UID);
-      
-      // Update the `status` field to 'completed'
-      await updateDoc(participantDocRef, {
-        status: "need-approval",
-      });
-
-      const userDocRef = doc(db, "users", UID, "task", id);
-      
-      // Update the `status` field to 'completed'
-      await updateDoc(userDocRef, {
-        status: "need-approval",
-      });
+      // Step 1: Check currentSubmission and maxSubmission in the "tasks" collection
+      const taskDocRef = doc(db, "tasks", id);
+      const taskDocSnap = await getDoc(taskDocRef);
   
-      alert("Task status updated successfully!");
-      setTaskStatus("completed");
+      if (taskDocSnap.exists()) {
+        const taskData = taskDocSnap.data();
+        const currentSubmission = taskData.currentSubmission || 0;
+        const maxSubmission = taskData.maxSubmission || 0;
+        const taskStatus = taskData.status;
+  
+        if (currentSubmission >= maxSubmission || taskStatus === "completed") {
+          alert("Sorry. Unexpected error code 5");
+          return;
+        }
+  
+        // Step 2: Update participant status to 'need-approval'
+        const participantDocRef = doc(db, "tasks", id, "participants", UID);
+        await updateDoc(participantDocRef, {
+          status: "need-approval",
+        });
+  
+        const userDocRef = doc(db, "users", UID, "task", id);
+        await updateDoc(userDocRef, {
+          status: "need-approval",
+        });
+  
+        // Step 3: Increment the currentSubmission value in the task document
+        await updateDoc(taskDocRef, {
+          currentSubmission: currentSubmission + 1,
+        });
+  
+        // Step 4: Check if currentSubmission matches maxSubmission, and update task status if necessary
+        if (currentSubmission + 1 === maxSubmission) {
+          await updateDoc(taskDocRef, {
+            status: "completed",
+          });
+        }
+  
+        alert("Task status updated successfully!");
+        setTaskStatus("need-approval"); // Update UI to reflect new status
+      } else {
+        console.error("No such task document!");
+      }
     } catch (error) {
       alert("Error updating task status:", error);
     }
-
+  
+    // Update task info in local storage
     const currentUserTaskInfo = JSON.parse(localStorage.getItem('userTaskInfo') || '[]');
     const updatedUserTaskInfo = currentUserTaskInfo.map(task =>
       task.id === taskDetails.taskID 
-        ? { ...task, status: 'completed' } 
+        ? { ...task, status: 'need-approval' } 
         : task
     );
     localStorage.setItem('userTaskInfo', JSON.stringify(updatedUserTaskInfo));
   }
+  
 
   return (
     <>
@@ -188,7 +217,17 @@ const TaskDetails = () => {
                   <strong>Url:</strong> null
                   <button className="copy-btn">📋</button>
                 </div>
-                <button className="submit-task" onClick={handleSubmitTask}>Submit Task</button>
+                <button
+  className="submit-task"
+  onClick={taskStatus === 'ongoing' ? handleSubmitTask : null}
+  style={{
+    opacity: taskStatus === 'ongoing' ? 1 : 0.5,
+    pointerEvents: taskStatus === 'ongoing' ? 'auto' : 'none',
+  }}
+>
+  {taskStatus === 'ongoing' ? 'Submit Task' : "You’ve already submitted"}
+</button>
+
               </div>
             </div>
           </div>

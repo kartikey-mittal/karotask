@@ -61,6 +61,9 @@ const updateTasksInLocalStorage = async (UID) => {
       const completedTasks = filteredTaskDetails.filter(
         (task) => task.status === "completed"
       );
+      const pendingTask = filteredTaskDetails.filter(
+        (task) => task.status === "need-approval"
+      );
 
       const allTasksSnapshot = await getDocs(collection(db, "tasks"));
       const allTasks = allTasksSnapshot.docs
@@ -84,6 +87,7 @@ const updateTasksInLocalStorage = async (UID) => {
         "Available Tasks": allTasks,
         "Ongoing Tasks": ongoingTasks,
         "Completed Tasks": completedTasks,
+        "Pending Tasks": pendingTask,
       };
     }
   } catch (error) {
@@ -92,6 +96,7 @@ const updateTasksInLocalStorage = async (UID) => {
       "Available Tasks": [],
       "Ongoing Tasks": [],
       "Completed Tasks": [],
+      "Pending Tasks": [],
     };
   }
 };
@@ -127,35 +132,57 @@ const [screenWidth, setScreenWidth] = useState(window.innerWidth);
 
   const handleStartTask = async (taskId) => {
     try {
+      // Fetch the task document
       const taskRef = doc(db, "tasks", taskId);
-      const participantsCollectionRef = collection(taskRef, "participants");
-
-      await setDoc(doc(participantsCollectionRef, UID), {
-        createdAt: serverTimestamp(),
-        status: "ongoing",
-      });
-
-      const usersRef = collection(db, "users");
-      const q = query(usersRef, where("UID", "==", UID));
-      const querySnapshot = await getDocs(q);
-
-      if (!querySnapshot.empty) {
-        const userDoc = querySnapshot.docs[0];
-        const userTasksCollectionRef = collection(userDoc.ref, "task");
-
-        await setDoc(doc(userTasksCollectionRef, taskId), {
-          createdAt: serverTimestamp(),
-          status: "ongoing",
-        });
+      const taskSnapshot = await getDocs(taskRef);
+  
+      if (!taskSnapshot.empty) {
+        const taskData = taskSnapshot.docs[0].data();
+        
+        // Only set to "ongoing" if the current status is "need-approval"
+        if (taskData.status !== "ongoing") {
+          
+          // Proceed if the task is not already "ongoing"
+          const participantsCollectionRef = collection(taskRef, "participants");
+  
+          // Add user to participants with "ongoing" status
+          await setDoc(doc(participantsCollectionRef, UID), {
+            createdAt: serverTimestamp(),
+            status: "ongoing",
+          });
+  
+          // Update the user's task status to "ongoing"
+          const usersRef = collection(db, "users");
+          const q = query(usersRef, where("UID", "==", UID));
+          const querySnapshot = await getDocs(q);
+  
+          if (!querySnapshot.empty) {
+            const userDoc = querySnapshot.docs[0];
+            const userTasksCollectionRef = collection(userDoc.ref, "task");
+  
+            // Set the task as "ongoing" for the user
+            await setDoc(doc(userTasksCollectionRef, taskId), {
+              createdAt: serverTimestamp(),
+              status: "ongoing",
+            });
+          }
+        } else {
+          // Task is already ongoing, handle appropriately if needed
+          console.log("Task is already ongoing");
+        }
+  
+        // Fetch updated tasks
+        const updatedTasks = await updateTasksInLocalStorage(UID);
+        setTasks(updatedTasks);
+      } else {
+        console.error("Task not found.");
       }
-
-      const updatedTasks = await updateTasksInLocalStorage(UID);
-      setTasks(updatedTasks);
     } catch (error) {
       console.error("Error starting task:", error);
-      alert("Failed to start task. Please try again.");
+      alert("Task is already in-progress");
     }
   };
+  
 
   return (
     <>
