@@ -112,7 +112,21 @@ const AdminTaskCard = ({ id, title, date, status, price, dueDate, description, t
             >
               {tag}
             </span>
+            
           ))}
+           <span
+           
+              style={{
+                backgroundColor: '#c2dff0',
+                padding: '2px 4px',
+                borderRadius: '4px',
+                marginRight: '8px',
+                marginBottom: '8px',
+                fontSize: '0.8rem',
+              }}
+            >
+       {id}
+            </span>
         </div>
       </div>
       <div

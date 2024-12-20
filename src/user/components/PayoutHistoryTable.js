@@ -66,7 +66,18 @@ const PayoutHistoryTable = () => {
         <td>{payout.date}</td>
         <td>{payout.payoutAmount}</td>
         <td>{payout.remainingBalance}</td>
-        <td>{payout.status}</td>
+        <td>
+          <span
+            style={{
+              backgroundColor: payout.status === 'completed' ? '#23c68b' : payout.status === 'pending' ? '#ff4d52' : 'yellow',
+              color: payout.status === 'completed' ? 'white' : 'white',
+              padding: '5px 10px',
+              borderRadius: '5px',
+            }}
+          >
+            {payout.status}
+          </span>
+        </td>
       </tr>
     ));
   };

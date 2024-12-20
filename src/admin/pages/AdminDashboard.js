@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import AdminDashUI from "./AdminDashUI";
 import AdminTask from "./AdminTask";
 import AdminTaskDetails from "./AdminTaskDetails";
-import Payments from "./Payments";
+import Payments from "./AdminPayments";
 
 
 
