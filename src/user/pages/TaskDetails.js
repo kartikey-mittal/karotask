@@ -144,8 +144,8 @@ const TaskDetails = () => {
         fontFamily: 'DMM, sans-serif',
       }}
        >
-        <div className="main-container" style={{}}>
-          <div className="about-task" style={{width:"80%",}}>
+        <div className="main-container" style={{flexDirection:isMobile?'column':'row',}}>
+          <div className="about-task" style={{width:"100%",}}>
          
           <div className="bottom">
               <div className="status-bar">

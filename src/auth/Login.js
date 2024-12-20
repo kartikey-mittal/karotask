@@ -160,7 +160,11 @@ const Login = () => {
           kyc: "temp",
           panCardUrl: "temp",
           pendingTask: 0,
-          photoUrl: "temp"
+          photoUrl: "temp",
+          availableMoney:0,
+          withdrawnMoney:0,
+          netEarning:0
+
         }),
         ...(activeTab === "creator" && {
           payments: [],  // Payments attribute for creator (empty array initially)

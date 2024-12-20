@@ -97,6 +97,7 @@ const updateTasksInLocalStorage = async (UID) => {
 };
 
 const Task = () => {
+
   const [tasks, setTasks] = useState({
     "Available Tasks": [],
     "Ongoing Tasks": [],
@@ -104,7 +105,17 @@ const Task = () => {
   });
   const [activeTab, setActiveTab] = useState("Available Tasks");
   const UID = localStorage.getItem("User-UID");
+const [screenWidth, setScreenWidth] = useState(window.innerWidth); 
 
+   useEffect(() => {
+      const handleResize = () => setScreenWidth(window.innerWidth);
+  
+      window.addEventListener('resize', handleResize);
+  
+      return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    const isMobile = screenWidth <= 768;
   useEffect(() => {
     const fetchTasks = async () => {
       const updatedTasks = await updateTasksInLocalStorage(UID);

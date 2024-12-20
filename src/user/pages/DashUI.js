@@ -4,8 +4,9 @@ import TaskStatus from '../components/TaskStatus';
 import TaskTable from '../components/TaskTable';
 import { FaTasks, FaSpinner, FaRegClock, FaRupeeSign, FaBell, FaTimes } from 'react-icons/fa';
 import UserTopLayer from '../components/UserTopLayer';
-import { collection, getDocs, query, where } from 'firebase/firestore';
+import { collection, getDocs, query, where ,getDoc} from 'firebase/firestore';
 import { db } from '../../firebase';
+import Loading from '../../components/Loading'
 import { 
   doc, 
   setDoc, 
@@ -106,6 +107,7 @@ const DashUI = () => {
   const [loading, setLoading] = useState(true);
   const [totalTasks, setTotalTasks] = useState(0);
   const [ongoingTasks, setOngoingTasks] = useState(0);
+  const [earning, setEarning] = useState(0);
   const [pendingApprovalTasks, setPendingApprovalTasks] = useState(0);
   const [screenWidth, setScreenWidth] = useState(window.innerWidth); 
 
@@ -123,13 +125,19 @@ const DashUI = () => {
   useEffect(() => {
     const fetchTasks = async () => {
       try {
+
+
+        
         setLoading(true);
 
         const usersQuery = query(collection(db, 'users'), where('UID', '==', UID));
+       
         const usersSnapshot = await getDocs(usersQuery);
 
         if (!usersSnapshot.empty) {
           const userDoc = usersSnapshot.docs[0];
+          const availableMoney = userDoc.data().availableMoney || 0;
+          setEarning(availableMoney)
           const userTasksQuery = collection(db, 'users', userDoc.id, 'task');
           const userTasksSnapshot = await getDocs(userTasksQuery);
 
@@ -137,10 +145,12 @@ const DashUI = () => {
             id: doc.id,
             status: doc.data().status || 'Not Available',
             name: doc.data().name || 'Unnamed Task',
+           
           }));
-
+          console.log(userTasks);
           const ongoingCount = userTasks.filter(task => task.status === 'ongoing').length;
           const completedCount = userTasks.filter(task => task.status === 'completed').length;
+        
 
           const tasksCollection = collection(db, 'tasks');
           const taskDetails = await Promise.all(
@@ -188,6 +198,7 @@ const DashUI = () => {
           setTotalTasks(allTasks.length);
           setOngoingTasks(ongoingCount);
           setPendingApprovalTasks(completedCount);
+        
         }
       } catch (error) {
         console.error('Error fetching tasks:', error);
@@ -280,6 +291,14 @@ const DashUI = () => {
         // WebKit (Chrome, Safari, newer versions of Opera) scrollbar styling
         className="custom-scrollbar"
       >
+
+
+{loading ? (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+        <Loading /> {/* Replace this with your actual loading component */}
+      </div>
+    ) : (
+      <>
         <div 
           style={{
             display: 'flex', 
@@ -293,7 +312,7 @@ const DashUI = () => {
           <StatBox icon={<FaTasks size="2em" />} title="Total Tasks" value={totalTasks} color="#edf0ff" />
           <StatBox icon={<FaSpinner size="2em" />} title="Ongoing Tasks" value={ongoingTasks} color="#ffe8ef" />
           <StatBox icon={<FaRegClock size="2em" />} title="Pending Approval" value={pendingApprovalTasks} color="#fcd4c8" />
-          <StatBox icon={<FaRupeeSign size="2em" />} title="My Earnings" value="₹15,000" color="#fff3d4" />
+          <StatBox icon={<FaRupeeSign size="2em" />} title="My Earnings" value={`₹${earning}`}  color="#fff3d4" />
         </div>
 
         <div 
@@ -329,6 +348,9 @@ const DashUI = () => {
           />
           {loading ? <p>Loading tasks...</p> : <TaskTable tasks={tasks} onStartTask={handleStartTask} />}
         </div>
+
+        </>
+        )}
       </div>
 
       {/* Add custom scrollbar CSS directly in the component */}

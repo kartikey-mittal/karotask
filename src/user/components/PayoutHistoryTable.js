@@ -1,12 +1,55 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { NavLink } from 'react-router-dom';
+import { db } from './../../firebase'; // Import your Firebase configuration
+import { collection, getDocs, doc } from 'firebase/firestore';
 
-const PayoutHistoryTable = ({ payouts }) => {
+const PayoutHistoryTable = () => {
+  const [payouts, setPayouts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const payoutsPerPage = 10;
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+  const isMobile = screenWidth <= 768;
 
-  // Ensure payouts is defined
+  useEffect(() => {
+    const handleResize = () => setScreenWidth(window.innerWidth);
+
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
+    const fetchPayouts = async () => {
+      const userUID = localStorage.getItem('User-UID'); // Retrieve User-UID from local storage
+      if (!userUID) return;
+
+      try {
+        const paymentsRef = collection(doc(db, 'users', userUID), 'payments');
+        const querySnapshot = await getDocs(paymentsRef);
+
+        const fetchedPayouts = querySnapshot.docs.map((doc) => {
+          const data = doc.data();
+          return {
+            id: doc.id,
+            description: `${data.paymentID || 0}`,
+           date: new Date(data.createdAt).toLocaleDateString('en-GB'),
+
+            payoutAmount: `₹${data.requestMoney || 0}`,
+            remainingBalance: `₹${data.remainingBalance || 0}`,
+            status: data.status || 'Pending',
+          };
+        });
+
+        setPayouts(fetchedPayouts);
+      } catch (error) {
+        console.error('Error fetching payouts:', error);
+      }
+    };
+
+    fetchPayouts();
+  }, []);
+
   const safePayouts = payouts || [];
 
   // Pagination logic
@@ -24,31 +67,27 @@ const PayoutHistoryTable = ({ payouts }) => {
         <td>{payout.payoutAmount}</td>
         <td>{payout.remainingBalance}</td>
         <td>{payout.status}</td>
-        <td>{payout.paidStatus}</td>
-        <td>
-          <NavLink className="action-button" to={`payout-details/${payout.id}`}> View Details</NavLink>
-        </td>
       </tr>
     ));
   };
 
   return (
-    <div className="table-container" style={{ margin: '20px', width: 'auto' }}>
-      <table>
-        <thead>
-          <tr style={{ backgroundColor: '#f1f1f1', borderBottom: '2px solid #ddd' }}>
-            <th style={{ padding: '10px', textAlign: 'left' }}>S.N.</th>
-            <th style={{ padding: '10px', textAlign: 'left' }}>Description</th>
-            <th style={{ padding: '10px', textAlign: 'left' }}>Date</th>
-            <th style={{ padding: '10px', textAlign: 'left' }}>Payout Amount</th>
-            <th style={{ padding: '10px', textAlign: 'left' }}>Remaining Balance</th>
-            <th style={{ padding: '10px', textAlign: 'left' }}>Status</th>
-            <th style={{ padding: '10px', textAlign: 'left' }}>Paid Status</th>
-            <th style={{ padding: '10px', textAlign: 'left' }}>Action</th>
-          </tr>
-        </thead>
-        <tbody>{renderPayouts()}</tbody>
-      </table>
+    <div className="table-wrapper" style={{ flexDirection: isMobile ? 'column' : 'row' }}>
+      <div className="table-scroll">
+        <table>
+          <thead>
+            <tr style={{ backgroundColor: '#f1f1f1', borderBottom: '2px solid #ddd' }}>
+              <th style={{ padding: '10px', textAlign: 'left' }}>S.N.</th>
+              <th style={{ padding: '10px', textAlign: 'left' }}>Payment-ID</th>
+              <th style={{ padding: '10px', textAlign: 'left' }}>Date</th>
+              <th style={{ padding: '10px', textAlign: 'left' }}>Payout Amount</th>
+              <th style={{ padding: '10px', textAlign: 'left' }}>Remaining Balance</th>
+              <th style={{ padding: '10px', textAlign: 'left' }}>Status</th>
+            </tr>
+          </thead>
+          <tbody>{renderPayouts()}</tbody>
+        </table>
+      </div>
       <div className="pagination">
         <button
           onClick={() => setCurrentPage(currentPage - 1)}
@@ -73,21 +112,28 @@ const PayoutHistoryTable = ({ payouts }) => {
         </button>
       </div>
       <style jsx>{`
-        .table-container {
+        .table-wrapper {
           width: 100%;
+          margin: 0 auto;
           border-radius: 10px;
           overflow: hidden;
           box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-          margin-top: 20px;
+        }
+        .table-scroll {
+          width: 100%;
+          overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
         }
         table {
           width: 100%;
+          min-width: 800px;
           border-collapse: collapse;
         }
         th, td {
           padding: 10px;
           text-align: left;
           font-size: 14px;
+          white-space: nowrap;
         }
         tr {
           border-bottom: 1px solid #ddd;
@@ -95,18 +141,12 @@ const PayoutHistoryTable = ({ payouts }) => {
         tr:last-child {
           border-bottom: none;
         }
-        .action-button {
-          background-color: #ff4081;
-          border: none;
-          padding: 5px 10px;
-          border-radius: 5px;
-          cursor: pointer;
-          color: #fff;
-          text-decoration: none;
-        }
         .pagination {
+          width: 100%;
           text-align: center;
           padding: 10px 0;
+          overflow-x: auto;
+          white-space: nowrap;
         }
         .pagination button {
           background-color: #e0e0e0;
@@ -125,40 +165,4 @@ const PayoutHistoryTable = ({ payouts }) => {
   );
 };
 
-// Sample demo data
-const demoPayouts = [
-  {
-    id: '1',
-    description: 'Payout for Project A',
-    date: '2024-12-01',
-    payoutAmount: '₹500',
-    remainingBalance: '₹1500',
-    status: 'Completed',
-    paidStatus: 'Paid',
-  },
-  {
-    id: '2',
-    description: 'Payout for Project B',
-    date: '2024-12-02',
-    payoutAmount: '₹200',
-    remainingBalance: '₹1300',
-    status: 'Pending',
-    paidStatus: 'Unpaid',
-  },
-  {
-    id: '3',
-    description: 'Payout for Project C',
-    date: '2024-12-03',
-    payoutAmount: '₹300',
-    remainingBalance: '₹1000',
-    status: 'Completed',
-    paidStatus: 'Paid',
-  },
-];
-
-// App component
-const App = () => {
-  return <PayoutHistoryTable payouts={demoPayouts} />;
-};
-
-export default App;
+export default PayoutHistoryTable;
