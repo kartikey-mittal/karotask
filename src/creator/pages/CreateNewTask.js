@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { db } from "../../firebase";
-import { collection, addDoc, Timestamp,doc,setDoc } from "firebase/firestore";
+import { collection, addDoc, Timestamp, doc, setDoc } from "firebase/firestore";
 import CreatorTopLayer from "../components/CreatorTopLayer";
-import { FaTasks, FaClipboardList, FaTag, FaDollarSign, FaRupeeSign ,FaWindowMaximize ,
-         FaCalendarAlt, FaCheckCircle, FaProjectDiagram, 
-         FaChartLine, FaFileUpload } from "react-icons/fa";
+import {
+  FaTasks, FaClipboardList, FaTag, FaDollarSign, FaRupeeSign, FaWindowMaximize,
+  FaCalendarAlt, FaCheckCircle, FaProjectDiagram, FaChartLine, FaFileUpload
+} from "react-icons/fa";
 import ContentEditable from "react-contenteditable";
-import ReactQuill from "react-quill"; // Import ReactQuill
-import "react-quill/dist/quill.snow.css"; // Import Quill styles
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 import { NavLink } from 'react-router-dom';
 
 const CreateNewTask = () => {
@@ -31,7 +32,7 @@ const CreateNewTask = () => {
   const contentScrollableArea = {
     flex: 1,
     overflowY: "auto",
-    marginTop: "70px", // Adjust based on top layer height
+    marginTop: "70px",
     padding: "0 20px",
   };
 
@@ -39,7 +40,6 @@ const CreateNewTask = () => {
     backgroundColor: "#ffffff",
     borderRadius: "12px",
     padding: "10px",
-    // boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
     maxWidth: "90%",
     margin: "0 auto",
   };
@@ -48,9 +48,11 @@ const CreateNewTask = () => {
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-between",
-   borderRadius: "12px", padding: "10px",
+    borderRadius: "12px",
+    padding: "10px",
     gap: "15px",
-    marginBottom: "15px",backgroundColor:"#f7f9fb"
+    marginBottom: "15px",
+    backgroundColor: "#f7f9fb"
   };
 
   const labelStyle = {
@@ -58,7 +60,7 @@ const CreateNewTask = () => {
     alignItems: "center",
     marginBottom: "5px",
     color: "#a27777",
-fontSize:'0.79rem'
+    fontSize: '0.79rem'
   };
 
   const iconStyle = {
@@ -75,19 +77,20 @@ fontSize:'0.79rem'
     borderRadius: "8px",
     fontSize: "1rem",
     cursor: "pointer",
-    marginTop: "15px",fontFamily:'DMB'
+    marginTop: "15px",
+    fontFamily: 'DMB'
   };
 
   const [formData, setFormData] = useState({
     category: "General Task",
     creator: "",
-    creatorID:UID,
+    creatorID: UID,
     currentSubmission: 0,
     dueDate: "",
-    maxSubmission: 0,
+    maxSubmission: 0, // Initialize with empty string
     name: "",
     overview: "",
-    price: 0,
+    price: "", // Initialize with empty string
     priority: "",
     status: "under-review",
     taskID: "1",
@@ -100,15 +103,6 @@ fontSize:'0.79rem'
 
   const handleInputChange = (e, fieldName) => {
     let value = e.target.value;
-
-    // Convert to number if fieldName is price or maxSubmission
-    if (fieldName === "price" || fieldName === "maxSubmission") {
-      value = Number(value);  // Use Number() for conversion
-      if (isNaN(value)) { //Handle invalid numbers 
-        value = 0; 
-      }
-    }
-
     setFormData(prev => ({
       ...prev,
       [fieldName]: value
@@ -134,16 +128,22 @@ fontSize:'0.79rem'
   };
 
   const handleSubmit = async () => {
+    // Validate all required fields
+    if (!formData.name || !formData.type || !formData.priority || !formData.price || !formData.maxSubmission || !formData.dueDate) {
+      alert("Please fill out all required fields.");
+      return;
+    }
+
     try {
       setIsSubmitting(true);
-      
+
       // Create a reference to the tasks collection
       const taskRef = await addDoc(collection(db, "tasks"), {
         ...formData,
         createdAt: Timestamp.now(),
         dueDate: formData.dueDate ? Timestamp.fromDate(new Date(formData.dueDate)) : null,
       });
-  
+
       // Now we have the document ID (taskRef.id)
       // Update the document with the generated taskID
       await setDoc(doc(db, "tasks", taskRef.id), {
@@ -152,43 +152,32 @@ fontSize:'0.79rem'
         createdAt: Timestamp.now(),
         dueDate: formData.dueDate ? Timestamp.fromDate(new Date(formData.dueDate)) : null,
       });
-     
+
       alert("Task created successfully!");
-      <NavLink
-      to={`/task`}
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        color: 'inherit',
-        textDecoration: 'none',
-      }}
-    ></NavLink>
       // Reset form
       setFormData({
         category: "General Task",
-        // creator: "SRMIST-NCR",
-        creatorID:UID,
+        creator: "",
+        creatorID: UID,
         currentSubmission: 0,
         dueDate: "",
-        maxSubmission: 0,
+        maxSubmission: 0, // Reset to empty string
         name: "",
         overview: "",
-        price: 0,
+        price: "", // Reset to empty string
         priority: "",
-        status: "",
-        taskID: "",  // Reset taskID
+        status: "under-review",
+        taskID: "1",
         type: "",
         uploadedFile: null,
       });
-  
+
       setIsSubmitting(false);
     } catch (error) {
       console.error("Error creating task:", error);
       setIsSubmitting(false);
     }
   };
-  
-  
 
   return (
     <div style={containerStyle}>
@@ -207,13 +196,15 @@ fontSize:'0.79rem'
               html={formData.name}
               disabled={!editing}
               onChange={(e) => handleInputChange(e, "name")}
+              
               tagName="span"
               style={{
                 fontWeight: "500",
                 fontSize: "14px",
                 border: "1px solid #ddd",
                 borderRadius: "8px",
-                padding: "10px",backgroundColor:'#fff'
+                padding: "10px",
+                backgroundColor: '#fff'
               }}
             />
           </div>
@@ -264,10 +255,10 @@ fontSize:'0.79rem'
           </div>
 
           {/* Price and Max Submission */}
-          <div style={{ display: "flex", gap: "10px" ,  borderRadius: "12px", padding: "20px",backgroundColor:'#f7f9fb',marginBottom:"10px"}}>
+          <div style={{ display: "flex", gap: "10px", borderRadius: "12px", padding: "20px", backgroundColor: '#f7f9fb', marginBottom: "10px" }}>
             <div style={{ flex: 1 }}>
               <div style={{ ...labelStyle }}>
-                <FaRupeeSign  style={iconStyle} /> Price ( Per submission )
+                <FaRupeeSign style={iconStyle} /> Price ( Per submission )
               </div>
               <input
                 type="number"
@@ -278,16 +269,16 @@ fontSize:'0.79rem'
                   fontSize: "14px",
                   border: "1px solid #ddd",
                   borderRadius: "8px",
-                  padding: "10px",backgroundColor:'#fff'
-                
+                  padding: "10px",
+                  backgroundColor: '#fff'
                 }}
               />
             </div>
 
             <div style={{ flex: 1 }}>
-              
+
               <div style={{ ...labelStyle }}>
-              <FaWindowMaximize   style={iconStyle} /> Max Submission
+                <FaWindowMaximize style={iconStyle} /> Max Submission
               </div>
               <input
                 type="number"
@@ -299,7 +290,6 @@ fontSize:'0.79rem'
                   border: "1px solid #ddd",
                   borderRadius: "8px",
                   padding: "10px",
-                
                 }}
               />
             </div>
@@ -307,24 +297,23 @@ fontSize:'0.79rem'
 
           {/* Due Date */}
           <div style={rowStyle}>
-  <div style={{ ...labelStyle }}>
-    <FaCalendarAlt style={iconStyle} /> Due Date
-  </div>
-  <input
-    type="date"
-    value={formData.dueDate}
-    disabled={!editing}
-    onChange={(e) => handleInputChange(e, "dueDate")}
-    style={{
-      fontWeight: "500",
-      fontSize: "14px",
-      border: "1px solid #ddd",
-      borderRadius: "8px",
-      padding: "10px",
-    }}
-  />
-</div>
-
+            <div style={{ ...labelStyle }}>
+              <FaCalendarAlt style={iconStyle} /> Due Date
+            </div>
+            <input
+              type="date"
+              value={formData.dueDate}
+              disabled={!editing}
+              onChange={(e) => handleInputChange(e, "dueDate")}
+              style={{
+                fontWeight: "500",
+                fontSize: "14px",
+                border: "1px solid #ddd",
+                borderRadius: "8px",
+                padding: "10px",
+              }}
+            />
+          </div>
 
           {/* Task Overview (Rich Text Editor) */}
           <div style={rowStyle}>
@@ -332,20 +321,15 @@ fontSize:'0.79rem'
               Task Overview
             </div>
             <ReactQuill
-            theme="snow"
+              theme="snow"
               value={formData.overview}
               onChange={handleOverviewChange}
               style={{
                 fontSize: "14px",
-                backgroundColor:"white",borderRadius:'1rem'
-                // border: "1px solid #ddd",
-                // borderRadius: "8px",
-                // padding: "10px",
+                backgroundColor: "white", borderRadius: '1rem'
               }}
             />
           </div>
-
-          
 
           {/* File Upload */}
           <div style={rowStyle}>

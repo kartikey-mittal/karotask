@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { FaBookmark, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 
-const TaskTable = ({ tasks, onStartTask }) => {
+const TaskTable = ({ tasks, onStartTask ,page}) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const tasksPerPage = 10;
+  const tasksPerPage = page ? page : 10;
 
   const validTasks = Array.isArray(tasks) ? tasks : [];
   const indexOfLastTask = currentPage * tasksPerPage;

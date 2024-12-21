@@ -7,11 +7,13 @@ import {
   serverTimestamp,
   query,
   where,
+  orderBy,
   getDocs,
 } from "firebase/firestore";
 import TaskTable from "../components/TaskTable";
 import UserTopLayer from "../components/UserTopLayer";
 import { FaTasks } from "react-icons/fa";
+import Loading from '../../components/Loading';
 
 const updateTasksInLocalStorage = async (UID) => {
   try {
@@ -65,11 +67,20 @@ const updateTasksInLocalStorage = async (UID) => {
         (task) => task.status === "need-approval"
       );
 
-      const allTasksSnapshot = await getDocs(collection(db, "tasks"));
+      const allTasksSnapshot = await getDocs(
+        query(
+          tasksCollection,
+          where("dueDate", ">", new Date()),
+          orderBy("dueDate"),
+          orderBy("createdAt", "desc")
+        )
+      );
+
       const allTasks = allTasksSnapshot.docs
         .filter(
           (taskDoc) =>
-            !userTasks.some((userTask) => userTask.id === taskDoc.id)
+            !userTasks.some((userTask) => userTask.id === taskDoc.id) &&
+            taskDoc.data().status !== "under-review"
         )
         .map((taskDoc) => {
           const taskData = taskDoc.data();
@@ -102,29 +113,33 @@ const updateTasksInLocalStorage = async (UID) => {
 };
 
 const Task = () => {
-
   const [tasks, setTasks] = useState({
     "Available Tasks": [],
     "Ongoing Tasks": [],
     "Completed Tasks": [],
+    "Pending Tasks": [],
   });
   const [activeTab, setActiveTab] = useState("Available Tasks");
   const UID = localStorage.getItem("User-UID");
-const [screenWidth, setScreenWidth] = useState(window.innerWidth); 
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+  const [loading, setLoading] = useState(true);
 
-   useEffect(() => {
-      const handleResize = () => setScreenWidth(window.innerWidth);
-  
-      window.addEventListener('resize', handleResize);
-  
-      return () => window.removeEventListener('resize', handleResize);
-    }, []);
+  useEffect(() => {
+    const handleResize = () => setScreenWidth(window.innerWidth);
 
-    const isMobile = screenWidth <= 768;
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const isMobile = screenWidth <= 768;
+
   useEffect(() => {
     const fetchTasks = async () => {
+      setLoading(true);
       const updatedTasks = await updateTasksInLocalStorage(UID);
       setTasks(updatedTasks);
+      setLoading(false);
     };
 
     fetchTasks();
@@ -135,31 +150,30 @@ const [screenWidth, setScreenWidth] = useState(window.innerWidth);
       // Fetch the task document
       const taskRef = doc(db, "tasks", taskId);
       const taskSnapshot = await getDocs(taskRef);
-  
+
       if (!taskSnapshot.empty) {
         const taskData = taskSnapshot.docs[0].data();
-        
+
         // Only set to "ongoing" if the current status is "need-approval"
         if (taskData.status !== "ongoing") {
-          
           // Proceed if the task is not already "ongoing"
           const participantsCollectionRef = collection(taskRef, "participants");
-  
+
           // Add user to participants with "ongoing" status
           await setDoc(doc(participantsCollectionRef, UID), {
             createdAt: serverTimestamp(),
             status: "ongoing",
           });
-  
+
           // Update the user's task status to "ongoing"
           const usersRef = collection(db, "users");
           const q = query(usersRef, where("UID", "==", UID));
           const querySnapshot = await getDocs(q);
-  
+
           if (!querySnapshot.empty) {
             const userDoc = querySnapshot.docs[0];
             const userTasksCollectionRef = collection(userDoc.ref, "task");
-  
+
             // Set the task as "ongoing" for the user
             await setDoc(doc(userTasksCollectionRef, taskId), {
               createdAt: serverTimestamp(),
@@ -170,7 +184,7 @@ const [screenWidth, setScreenWidth] = useState(window.innerWidth);
           // Task is already ongoing, handle appropriately if needed
           console.log("Task is already ongoing");
         }
-  
+
         // Fetch updated tasks
         const updatedTasks = await updateTasksInLocalStorage(UID);
         setTasks(updatedTasks);
@@ -182,66 +196,81 @@ const [screenWidth, setScreenWidth] = useState(window.innerWidth);
       alert("Task is already in-progress");
     }
   };
-  
 
   return (
     <>
-  <div 
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        height: '100vh',
-        overflow: 'hidden',
-      }}
-    >
-       <div 
+      <div
         style={{
-          position: 'sticky',
-          top: 0,
-          zIndex: 100,
-          width: '100%',
+          display: "flex",
+          flexDirection: "column",
+          height: "100vh",
+          overflow: "hidden",
         }}
       >
-      <UserTopLayer name="Tasks" icon={FaTasks} /></div>
-      <div 
-        style={{
-          flexGrow: 1,
-          overflowY: 'auto',
-          padding: '20px',
-          fontFamily: 'DMM, sans-serif',
-          // Custom Scrollbar Styles
-          scrollbarWidth: 'thin',
-          scrollbarColor: '#d63384 #f1f1f1',
-        }}
-        // WebKit (Chrome, Safari, newer versions of Opera) scrollbar styling
-        className="custom-scrollbar"
-      >
-      <div className="task-container">
-        <div className="tabs">
-          {Object.keys(tasks).map((tab) => (
-            <div
-              key={tab}
-              className={`tab ${activeTab === tab ? "active" : ""}`}
-              onClick={() => setActiveTab(tab)}
-            >
-              {tab}
-            </div>
-          ))}
+        <div
+          style={{
+            position: "sticky",
+            top: 0,
+            zIndex: 100,
+            width: "100%",
+          }}
+        >
+          <UserTopLayer name="Tasks" icon={FaTasks} />
         </div>
-        <div className="task-content">
-          {Array.isArray(tasks[activeTab]) && tasks[activeTab].length > 0 ? (
-            <TaskTable tasks={tasks[activeTab]} onStartTask={handleStartTask} />
+        <div
+          style={{
+            flexGrow: 1,
+            overflowY: "auto",
+            padding: "20px",
+            fontFamily: "DMM, sans-serif",
+            // Custom Scrollbar Styles
+            scrollbarWidth: "thin",
+            scrollbarColor: "#d63384 #f1f1f1",
+          }}
+          // WebKit (Chrome, Safari, newer versions of Opera) scrollbar styling
+          className="custom-scrollbar"
+        >
+          {loading ? (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "100%",
+              }}
+            >
+              <Loading /> {/* Replace this with your actual loading component */}
+            </div>
           ) : (
-            <p className="empty-state">No tasks available in this category.</p>
+            <>
+              <div className="task-container">
+                <div className="tabs">
+                  {Object.keys(tasks).map((tab) => (
+                    <div
+                      key={tab}
+                      className={`tab ${activeTab === tab ? "active" : ""}`}
+                      onClick={() => setActiveTab(tab)}
+                    >
+                      {tab}
+                    </div>
+                  ))}
+                </div>
+                <div className="task-content">
+                  {Array.isArray(tasks[activeTab]) && tasks[activeTab].length > 0 ? (
+                    <TaskTable tasks={tasks[activeTab]} onStartTask={handleStartTask} page={7} />
+                  ) : (
+                    <p className="empty-state">No tasks available in this category.</p>
+                  )}
+                </div>
+              </div>
+            </>
           )}
         </div>
-      </div>
-      </div>
       </div>
       <style jsx>{`
         .task-container {
           padding: 10px;
-          font-family: "DMM,;
+          font-family: "DMM";
           background: #f8f9fa;
           border-radius: 8px;
           // box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -271,29 +300,26 @@ const [screenWidth, setScreenWidth] = useState(window.innerWidth);
           color: #fff;
         }
         .task-content {
-          padding: ;
+          padding: 10px;
           background: #fff;
           border-radius: 8px;
-          border-color:#000;
+          border-color: #000;
           // box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         .empty-state {
           text-align: center;
           color: #aaa;
         }
-           .custom-scrollbar::-webkit-scrollbar {
+        .custom-scrollbar::-webkit-scrollbar {
           width: 6px; /* Thin scrollbar */
         }
-
         .custom-scrollbar::-webkit-scrollbar-track {
           background: #f1f1f1; /* Light background for the track */
         }
-
         .custom-scrollbar::-webkit-scrollbar-thumb {
           background: #d63384; /* Red/pinkish color for the scrollbar */
           border-radius: 3px;
         }
-
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
           background: #a30b4d; /* Slightly darker on hover */
         }

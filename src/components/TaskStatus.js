@@ -42,15 +42,15 @@ const TaskStatus = ({ completed, inProgress, pendingApproval, role }) => {
       <div style={{ marginTop: '20px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px', fontSize: '0.8rem' }}>
           <span style={{ color: '#208b3e', fontSize: '0.8rem' }}>● Completed</span>
-          <span>{completed}%</span>
+          <span>{completed}</span>
         </div>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px', fontSize: '0.8rem' }}>
           <span style={{ color: '#FFA726', fontSize: '0.8rem' }}>● In Progress</span>
-          <span>{inProgress}%</span>
+          <span>{inProgress}</span>
         </div>
         <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem' }}>
           <span style={{ color: '#2f2f2f', fontSize: '0.8rem' }}>● {isCreator ? 'Under-Review' : 'Pending Approval'}</span>
-          <span>{pendingApproval}%</span>
+          <span>{pendingApproval}</span>
         </div>
       </div>
     </div>

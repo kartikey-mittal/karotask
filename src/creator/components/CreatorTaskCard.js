@@ -86,7 +86,7 @@ const CreatorTaskCard = ({ id, title, date, status, price, dueDate, description,
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
           <p style={{ display: 'flex', alignItems: 'center', fontSize: '0.9rem', color: '#621c1c' }}>
             <FaRupeeSign style={{ marginRight: '4px', color: '#afafaf' }} />
-            Price Submission - ₹{price.toFixed(2)}
+            Price Submission - ₹{price}
           </p>
           <p style={{ color: '#e5ecf6' }}>|</p>
           <p style={{ display: 'flex', alignItems: 'center', fontSize: '0.9rem', color: '#621c1c' }}>
